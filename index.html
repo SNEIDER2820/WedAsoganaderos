@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asoganaderos Facatativá — Acceso al Sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --naranja:        #e8622a;
+  --naranja-pastel: #fde8dc;
+  --naranja-medio:  #f2845a;
+  --crema:          #fdf6ee;
+  --crema-2:        #f9ede0;
+  --crema-3:        #f3e0cc;
+  --rojo:           #c0392b;
+  --rojo-claro:     #e74c3c;
+  --rojo-pastel:    #fde8e6;
+  --verde:          #1e7e4a;
+  --verde-claro:    #27ae60;
+  --verde-pastel:   #e6f5ec;
+  --azul:           #1a6fa8;
+  --azul-claro:     #2980b9;
+  --azul-pastel:    #e6f2fa;
+  --marron:         #6b3a2a;
+  --marron-claro:   #a0522d;
+  --texto:          #2c1a0e;
+  --texto-suave:    #7a5c4a;
+  --blanco:         #ffffff;
+  --borde:          #e8d5c4;
+  --sombra: 0 32px 80px rgba(100,40,10,.15), 0 8px 24px rgba(100,40,10,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden;}
+
+.fondo{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 70% at 20% 50%,#fde3cc 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 20%,#fbd5b8 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 60% 90%,#f9cba8 0%,transparent 50%),
+    linear-gradient(145deg,#fdf0e0 0%,#fae3c8 40%,#f8d9b8 100%);
+}
+.fondo::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(45deg,rgba(232,98,42,.04) 0px,rgba(232,98,42,.04) 1px,transparent 1px,transparent 40px),
+    repeating-linear-gradient(-45deg,rgba(192,57,43,.03) 0px,rgba(192,57,43,.03) 1px,transparent 1px,transparent 40px);
+}
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none;z-index:0;}
+.blob-1{width:500px;height:500px;background:radial-gradient(circle,#f5a87d,transparent);top:-100px;left:-100px;animation:flotar 8s ease-in-out infinite alternate;}
+.blob-2{width:400px;height:400px;background:radial-gradient(circle,#e8622a55,transparent);bottom:-80px;right:-80px;animation:flotar 10s ease-in-out infinite alternate-reverse;}
+.blob-3{width:300px;height:300px;background:radial-gradient(circle,#c0392b33,transparent);top:40%;left:55%;animation:flotar 12s ease-in-out infinite alternate;}
+@keyframes flotar{from{transform:translate(0,0) scale(1);}to{transform:translate(30px,20px) scale(1.08);}}
+
+.layout{position:relative;z-index:1;display:flex;height:100vh;}
+
+/* COL IZQUIERDA */
+.col-izq{width:44%;display:flex;flex-direction:column;justify-content:center;padding:3rem 3.5rem 3rem 4.5rem;position:relative;}
+.col-izq::after{content:'';position:absolute;right:0;top:12%;bottom:12%;width:1px;background:linear-gradient(to bottom,transparent,var(--borde) 30%,var(--borde) 70%,transparent);}
+.logo-wrap{display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;}
+.logo-img{width:90px;height:90px;border-radius:16px;object-fit:cover;box-shadow:0 4px 16px rgba(192,57,43,.2);border:2px solid rgba(232,98,42,.2);}
+.logo-texto h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:var(--marron);line-height:1.1;}
+.logo-texto span{display:block;font-size:12px;font-weight:500;color:var(--naranja);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;}
+.izq-titulo{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,2.5vw,2.8rem);font-weight:700;color:var(--texto);line-height:1.15;margin-bottom:1rem;}
+.izq-titulo em{font-style:normal;color:var(--rojo);position:relative;}
+.izq-titulo em::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:2px;background:var(--rojo);border-radius:2px;}
+.izq-desc{font-size:14px;color:var(--texto-suave);line-height:1.75;margin-bottom:2rem;max-width:320px;}
+.modulos-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mod-chip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.6);border:1px solid var(--borde);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:500;color:var(--texto);backdrop-filter:blur(4px);}
+.mod-chip .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.dot-rojo  {background:var(--rojo);}
+.dot-verde {background:var(--verde);}
+.dot-azul  {background:var(--azul);}
+.dot-naranja{background:var(--naranja);}
+.sello{margin-top:2rem;display:inline-flex;align-items:center;gap:10px;background:rgba(192,57,43,.07);border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:10px 16px;font-size:12px;color:var(--rojo);font-weight:500;}
+
+/* COL DERECHA */
+.col-der{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;}
+.card{background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border:1px solid rgba(232,98,42,.15);border-radius:20px;padding:2.5rem 2.5rem 2rem;width:100%;max-width:430px;box-shadow:var(--sombra);animation:entrar .5s cubic-bezier(.22,.68,0,1.15) both;}
+@keyframes entrar{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.card-head{margin-bottom:1.5rem;}
+.card-head h2{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--texto);margin-bottom:.3rem;}
+.card-head p{font-size:13px;color:var(--texto-suave);}
+
+/* TABS DE ROL */
+.tabs-rol{display:flex;gap:4px;background:var(--crema-2);border-radius:10px;padding:4px;margin-bottom:1.4rem;}
+.tab-btn{flex:1;padding:7px 4px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;border:none;border-radius:7px;background:transparent;color:var(--texto-suave);cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.2;}
+.tab-btn .ico-tab{font-size:15px;}
+.tab-btn.active{background:var(--blanco);color:var(--texto);box-shadow:0 2px 8px rgba(100,40,10,.12);font-weight:600;}
+.tab-btn.active[data-rol="admin"]       {color:var(--rojo);}
+.tab-btn.active[data-rol="veterinario"] {color:var(--verde);}
+.tab-btn.active[data-rol="empleado"]    {color:var(--azul);}
+.tab-btn.active[data-rol="ganadero"]    {color:var(--naranja);}
+
+/* CAMPOS */
+.campo{margin-bottom:1rem;}
+.campo label{display:block;font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem;}
+.inp-wrap{position:relative;}
+.inp-wrap svg.ico-campo{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#c4a48a;pointer-events:none;transition:color .2s;}
+.inp-wrap input,.inp-wrap select{width:100%;padding:10px 12px 10px 38px;border:1.5px solid var(--borde);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--texto);background:rgba(255,255,255,.8);outline:none;transition:border-color .2s,box-shadow .2s;appearance:none;}
+.inp-wrap input:focus,.inp-wrap select:focus{border-color:var(--naranja);box-shadow:0 0 0 3px rgba(232,98,42,.1);}
+.inp-wrap input.err{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(192,57,43,.1);}
+
+/* LLAVE ADMIN */
+.llave-campo{display:none;margin-bottom:1rem;}
+.llave-campo.visible{display:block;}
+.llave-header{display:flex;align-items:center;gap:6px;margin-bottom:.4rem;}
+.llave-header label{font-size:11px;font-weight:600;color:var(--rojo);text-transform:uppercase;letter-spacing:.08em;}
+.llave-badge{font-size:10px;background:var(--rojo-pastel);color:var(--rojo);border:1px solid rgba(192,57,43,.2);padding:2px 7px;border-radius:4px;font-weight:600;}
+.llave-campo input{width:100%;padding:10px 12px 10px 38px;border:1.5px solid rgba(192,57,43,.3);border-radius:10px;font-family:'DM Sans',monospace;font-size:13px;color:var(--rojo);background:var(--rojo-pastel);outline:none;transition:border-color .2s,box-shadow .2s;letter-spacing:.04em;}
+.llave-campo input:focus{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(192,57,43,.12);}
+.toggle-pass{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#c4a48a;cursor:pointer;display:flex;transition:color .2s;}
+.toggle-pass:hover{color:var(--naranja);}
+
+/* REGISTRO GANADERO */
+.registro-link{margin-top:.75rem;text-align:center;font-size:12.5px;color:var(--texto-suave);}
+.registro-link a{color:var(--naranja);font-weight:600;cursor:pointer;text-decoration:none;}
+.registro-link a:hover{text-decoration:underline;}
+
+/* MENSAJES */
+.msg-err{display:none;font-size:11.5px;color:var(--rojo);margin-top:4px;padding-left:2px;}
+.msg-err.v{display:block;}
+.alerta{display:none;background:var(--rojo-pastel);border:1px solid rgba(192,57,43,.25);border-left:3px solid var(--rojo);border-radius:8px;padding:.65rem .9rem;font-size:13px;color:var(--rojo);margin-bottom:1rem;align-items:center;gap:8px;}
+.alerta.v{display:flex;animation:shake .35s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+
+/* BOTONES */
+.btn{width:100%;padding:12px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:.5rem;transition:transform .15s,box-shadow .15s;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .2s;}
+.btn:hover::before{opacity:1;}
+.btn:hover:not(:disabled){transform:translateY(-2px);}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.btn-admin {background:linear-gradient(135deg,var(--rojo),#9b2335);color:white;box-shadow:0 4px 16px rgba(192,57,43,.3);}
+.btn-vet   {background:linear-gradient(135deg,var(--verde-claro),#1a6b3a);color:white;box-shadow:0 4px 16px rgba(39,174,96,.3);}
+.btn-emp   {background:linear-gradient(135deg,var(--azul-claro),#155d8a);color:white;box-shadow:0 4px 16px rgba(41,128,185,.3);}
+.btn-gan   {background:linear-gradient(135deg,var(--naranja),#c44e1e);color:white;box-shadow:0 4px 16px rgba(232,98,42,.3);}
+.spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;}
+.btn.loading .spinner{display:block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* NOTA */
+.nota{margin-top:1.1rem;padding:.75rem 1rem;background:rgba(232,98,42,.06);border:1px solid rgba(232,98,42,.15);border-radius:8px;font-size:11.5px;color:var(--texto-suave);line-height:1.6;display:flex;gap:9px;}
+.nota strong{color:var(--marron);}
+
+/* DEMO */
+.demo-wrap{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--borde);}
+.demo-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#c4a48a;margin-bottom:.5rem;}
+.demo-row{display:flex;gap:5px;flex-wrap:wrap;}
+.demo-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:5px 10px;border-radius:7px;border:1px solid var(--borde);background:rgba(255,255,255,.7);cursor:pointer;color:var(--texto-suave);transition:all .15s;}
+.demo-btn:hover{border-color:var(--naranja);color:var(--marron);background:var(--naranja-pastel);}
+.demo-btn.d-admin{border-color:rgba(192,57,43,.25);} .demo-btn.d-admin:hover{border-color:var(--rojo);color:var(--rojo);background:var(--rojo-pastel);}
+.demo-btn.d-vet  {border-color:rgba(39,174,96,.25);}  .demo-btn.d-vet:hover  {border-color:var(--verde);color:var(--verde);background:var(--verde-pastel);}
+.demo-btn.d-emp  {border-color:rgba(41,128,185,.25);} .demo-btn.d-emp:hover  {border-color:var(--azul);color:var(--azul);background:var(--azul-pastel);}
+.demo-btn.d-gan  {border-color:rgba(232,98,42,.25);}  .demo-btn.d-gan:hover  {border-color:var(--naranja);color:var(--naranja);background:var(--naranja-pastel);}
+
+/* MODAL REGISTRO */
+.modal-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(44,26,14,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.v{display:flex;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:var(--crema);border-radius:16px;padding:2rem;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.2);animation:slideUp .3s cubic-bezier(.22,.68,0,1.2) both;}
+@keyframes slideUp{from{transform:translateY(20px) scale(.97);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.modal-head h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--texto);}
+.btn-cerrar{background:none;border:none;cursor:pointer;color:var(--texto-suave);font-size:20px;padding:2px 6px;border-radius:6px;transition:background .15s;}
+.btn-cerrar:hover{background:var(--crema-3);}
+.modal-nota{background:var(--naranja-pastel);border:1px solid rgba(232,98,42,.25);border-left:3px solid var(--naranja);border-radius:8px;padding:.65rem .9rem;font-size:12px;color:var(--marron);margin-bottom:1.25rem;line-height:1.5;}
+.btn-registrar{background:linear-gradient(135deg,var(--naranja),#c44e1e);color:white;box-shadow:0 4px 16px rgba(232,98,42,.3);width:100%;padding:12px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:.5rem;transition:transform .15s,box-shadow .15s;}
+.btn-registrar:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,98,42,.4);}
+
+/* OVERLAY ÉXITO */
+.overlay-ok{display:none;position:fixed;inset:0;z-index:200;background:rgba(44,26,14,.85);align-items:center;justify-content:center;flex-direction:column;gap:1rem;}
+.overlay-ok.v{display:flex;animation:fadeIn .3s ease;}
+.ok-circulo{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pop .4s cubic-bezier(.22,.68,0,1.4) .1s both;}
+@keyframes pop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.overlay-ok h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white;}
+.overlay-ok p{font-size:13px;color:rgba(255,255,255,.55);}
+
+@media(max-width:800px){.col-izq{display:none;}.col-der{width:100%;}}
+</style>
+</head>
+<body>
+
+<div class="fondo"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="layout">
+
+  <!-- COL IZQUIERDA -->
+  <div class="col-izq">
+    <div class="logo-wrap">
+      <img class="logo-img" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADhAOEDASIAAhEBAxEB/8QAHQABAAEFAQEBAAAAAAAAAAAAAAYBAgUHCAQDCf/EAFEQAAAFAQQEBwwIAwYDCQAAAAABAgMEBQYREhMHFBUhIiMxMkFRkjNCUlNUYWJjcYGRoQgWJDRygrHwQ3PBJURVotHhF5PSNUZXZIOUwsPx/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAQFAQIDBgf/xAAyEQACAQMBBQUIAwADAAAAAAAAAgMBBBIFERMhIjEGFDJBURUjM0JSYYGhcZGxJMHx/9oADAMBAAIRAxEAPwDp7bnrA256wSTU43kzfYINTjeTN9ggBG9uesDbnrBJNTjeTN9gg1ON5M32CAEb256wNuesEk1ON5M32CDU43kzfYIARvbnrA256wSTU43kzfYINTjeTN9ggBG9uesDbnrBJNTjeTN9gg1ON5M32CAEb296wXbe9aJHqkbyZrsEKanG8mb7BACO7e9aLdvesEk1ON5M32CFdUjeTNdggBGtuesF23nfGiRanG8mb7BBqcbyZvsEAI3tz1gu2960SLU43kzfYINTjeTN9ggBHdvO+NDb3rRItTjeTN9gg1ON5M32CAEd2960NvetEi1ON5M32CDU43kzfYIAR3b3rQ256wSLU43kzfYINTjeTN9ggBHduesFu3PWCS6pG8ma7BCmpxvJm+wQAje3PWBtz1gkmpxvJm+wQanG8mb7BACN7c9YAkmpxvJm+wQAD0gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKKAFQFMQoowBcAsximNvrIAfQBbiFcQAqAAAACmIMQAqApiFQAAUxBiAFQAAAAUxBiAFQAAAAAAAAAAAAAAAUxBiAFQPkFqjFinQAUokkW4RTSHbuh2Lpzcmru8a53GM1wnHVdREK23t1Zuy1Pck1OpRm3W0KUhnMLMUd3IRDnSrVWdHgOaSrSttyaxUnsmiRl4suM3y3kXs4XJ1de6Hc3W78Jb6ZpjXDbZOn+kxrWlq3rhFIahUGzkZfM2q/x6k9eAuQYe09rtJUeBS6xJtbTXKe/PYZ/s1jgqSo+Fes7xpZytTnJciRJ1aTMf570lhLqvdi5B6Ilay7J1ShO5mW+8zJjeC04hfC9hGj9BXd4kbmyPb07OxovKtDtqVbSylMZ+3V2nR/a8n+gj87TRo5h/wDeBt3+U2axxb6x0Sqh0ShwIkeqWzkyGm5fDjQIbfHPpLvz8FHV1jvXUGK+TslbQLtkev4OkJn0gbBNbmXKjIX3iERVcL4jyp+kTYjKRmR6jvR4gal0k0yzVL0cU+bZ6nOwtrPNL45ZqewkRncZmZ3dHINeUGHBcZ12rzXG47a8GrM8KTJUfNJBdBen0DTv8nU2tez1hJDvG2nUZfSFsOZGWXUW/bFUPbG086PnCvcqMho/TjKIaa0m2KokOnUdumRo1GjYFPT5716spJkWFPprPqL5C2JZuw8jRNVK7ChTMxhCkImTOC4pwruFcR3FvPkGPaEhFrounMisuXU6Cp+lnR9M7naeF+c8P6iTU+0FHqBfYalDkfyX0qH59/v93DPWYsvaGrlm0eNlt+UreyG+3fv/AMw7LqX1Kd7jshBH4Zdn8neuYk+oXYiLzDkJqJpdshT3Kgdo9Xp8RClrWueTre7ouMjvM+QvOPZZ36Qlr4DmVV4dOqrfoHkKw+4jI/gO63sbFK3Zm4ZcoGox1mXsBShp6yn0gLEVfLaqTkiiyHPLEFl4v5ib0/G4U0kaTJbkyJZuwBxqjWJaMes48TMZvwz6DMdu8RquRVV0u63m7Zdhtt2S033R1tv8ayFUOtuFmNuZn4RyDVU0jbcxu0km1dqziYUT58R5SWGHDv4JII792/p6BItGs2BA0m0aFYOt1Go06WhzaEZ5a1ttJJN6VXr3kd9wjre5NjiT5dG3ceWX6OoWj3D6D5s8g+gnlEAAAAAAAArhQzHhpVSiVSGiZBkNyI7mLA4jek7juP5kY9SnADUx6lT5B83XSbLeZEIBpJ0r2asW05HkSSmVHvIbK04/f4Je0czW+0qWute843JnHCp7nMhxOClSfTXyq/TzCLNdRxl1pug3N/X6VOiLfabLJWbU5GjPFVpjfKzFuUlPtXyENE230zW4tAeBqQ5RYbnMRGQpKlJ/GZb/AMowNmmI1Esk5a6VCjzZGs6rAZeRibSq69SzR03dA2ZYqvUzSdQ5lnrQwY7dRYRjQtngpUnw2+U0mV+8hWTXkjHqodKtbDmwz2cK1NJ0eNtS0UKNJzHHJkltC1rWpSlXmWLeY2J9I9zKrlDpzf3eJAvQj8S7v/rIQSMTlnLZNNzu6UyYnO/ChfCV8N42d9JCmawzRrTRuMj4Mha0d7ed7avYfC+JCLlVmLiWqLdw1+U05hGYi2WtDIp7lQdprkaGwjGt6TxTfuv5TPdcMdAnSYEvWIMlyPI5mNGHEkbarsqbP+jdHmVJyQ5I1lvhvc5xJP3JMz6d1wVJ15cyRsqr81dhrrR5RPrHayn0pxr7O4vG9/LLer+gW+nu1O29Ukf+ZUwyjwW0cBJF5t3J4RjOaCqjGgaQo5SXMttxlxhC1+FuP+gy9sbP0SydqJFZnVZuouSJKn4EBCOaozM+NPkwEZ+a+4hhuhDnnZbrm9OB6NPLep2estTsvuEZS1+5KRBNH1M2xbilQ8ri3JKVr/CW8bI0sWkstJdpVQbk7VrMNniWW+FGbcO48xzruPkK/wBoiWiGuUih2nkVmuSXG3MlWTejnOLPhchbv9xj5TnatJSybl48T06fa+5ULZuU5p37PTEJQhHe5l16le3oGY0pH9WNFdn7IXfaH0Z0n8vDVf8AmMvgNeOVBqoWz2jO+7yKg289/LziNXyGwNLlesrNtC3Vo0zbsluMlmNFR92aVeZ41rv38vIXUQGWh3LQR47Vpx/JGdHNmI1X1ys1fi6FTEKekr8aoivwF8PmMZXKnU7WVxuM01ltuLSzDho7mwkzuSREXzMbQslTGq5oDkUqmSYzcyQtS141klOLOJakn1XkQ+GhaylMhWikTZU5qq1GGjh6nwmIyj701nyueboGTm96tWkkk604UoeDTLLaodn6NYWC7xcdCXpnu3pv/Nev3ENcUCizq/UG6fSI2Y452Wk9az6C84kNu6ZXKhaKRVak3q8ioTUsxYby+OXyoTcjluIrviJLpAS3o9snCslSHf7Qnox1KYjnKT1F1EoxlWOttNuIUji8bEYbpNh6fL2dWK/NkOcxa4DPEoV7T3mNgVKLSNFljpEmmSdYqlW+7PLRhUlJl1eYvmIfoZsq3VKrt2pNttUamcc8tf8AEcRvSW+/cW8z9hDBaRLTO2rtPIqH9yb4EZHgt/78obeJzaJri4wy2qvX0Jnod0tNWMgFR6nRW5EN9alvPI7sq/vlkfOHQ2jmu2CrmZMsrs5uS53ZlDCWnk/iTyjkazlj6nWIjlVdcbp1Lb4a58nm/kLvj9gztm7Ft1RqRMsXax12oQOHeuKuMrrvSu8S4bto+Vit1XR7SZmaN8W/X5O1W+TdvF5Gd28hyto40+1elvN061ze0Y3M1lCMMhv2lyLL5/iHRtl7S0i0tNTUKJOjzI59+hfyMugxbRTxyeE8Ve6TcWPxF4epngFqTFR2K4qAsxAAOe9DFf8A+HlWmWJtVMbjxsnaEOSvue/uqCPzKv8A2YwGlfTtKqZu0qxZnCjcxcz+I5+DqLzjJaQqfFt3ErFJby261QXsbPhKbWglp9xkd3tIc9uN5b2XxrbnfoX/AF84oFupN3ifSNM0u1upmnlXm9PL+SXWOg/2TWbXToW1dQWniXr1JdcWfPX0mREPjbm2X1niU9vYsOE5E7+N3yTK73ELtHNs5NkKhI+zaxT3+BJZ3cL0ivGwGo2ia37upwY+xay/zMDeQpSrr+TmOdIjsxZyt3SfOROXy2eRh1Unan0fo7kZvMcpklx9eD8XC+RiIaK5jlP0hUeQ3/EkpZX+FfA+d5fAhLdGNqItjKvVbI2ld+xZykLXg4KXOTf5jK4eatosJZSrnXbP1Vyqy+fDgIcxNsueGpfSRX8ns6hqaJIy5wY8G40/JG9KDrUzSRXHGu56zg/MSSJXzIxJLEaTG6fQ/q7aCnbRp+DAjm4kp8EyPlu6Brlxx1x5xx1zNccXjWvwlHvxAy3mPNt+MWlA3xLVrGOS3VJPlJzPrWjqO9rFEsxIkyO81tXEpV+DpEjtVWJNU+j3DkznftMuf4GFO54zuIugiJIiNY0Z2up8tptqnNSG3OY9GXxafafQL9IlUjN0Sh2OhSdYj0lGOS8jmuSD51x9RXr+PmGMSsrDFJJHumy4kNBSv34QvjsOyHsuK05Jc8BnhfoJXStGts6nxjdFcbb8OSsm/wBRlmUuJriCL4jENwj6DalP0HWhc+81aFH/AAIU7/oMw3oMp0drMnWnkfkZQlPzMxrkpCbWrVPM0jiBI6AY0H2WcazCq9Vc9NC2/wDoH0VoNsr/AIlVe2j/AKBjeKcfb9svn+jn1KnW/wCK52+Cr2kMjRq/XKIy43SKjIhNv8/J74bnlaCKR/dq/UW/5yEKT8iIR+p6Dau1/wBm1uFN/G2ppXyMyGd4ptTVrGTg3+GuKZVpMS0MOsuuuTZDDyXuOXiUrBv5TE9tpbuytp3YUiVZuS7NbRgRnPYW958h3cpCMVvR/a+kZms0Rx1vw2eNT8hGFJy+LDxHVre3u2Vlbp6G9dID0H/hvDoVMr9BhNuL+2LQvCnL5bkITv5bhAtGljoto7Yux9Z12lRMK5K8GHN813nEFUn1f7/dwm2im3H1MlyG5MJyRDl4ceBZZiVF07+UZxOD2MlrbssdcsiQ6TLW2UrEtujmVVKn01amUsw8CW3VEfL8rviMNHt5BodEkU+yFJ1Jx9HHSZL2Y4PHV52jlyW5IiUS0ch1zEvJXJQ23i5eXesi5RHqfT3a5XNSodNy3H18SznKdS0nzrPq6zA0t7WGkfvFrSn3M3YizdHtHUI9P2lUtdf56GYqcLCS5y1rPq/qQzM2HXNHtsW49jK1JqMxtHHMMsqUlPgocJN5HeJK7UaHokomyoLbVRtK+hK5K+alN/NxHyoRy3F7+ka9PSDa5D2ZHq2pt8/JhxWkt4j9pXn7TMwVmocqUnu8qr8P7nS+jbS21WJrdn7VQl0Gu4E8W9wEv+dF/wCg2slV/IZDgaqTbS2qlbQmlNqLjaMGNDHBSkj9EruW8ba0PaaZ1CfboFuCd1TgoZmPIPMZ/mF0o9Pl8IW1vefKx5bVOzbIu8g/qh09efUAj/1vsr/jsL/npATd5Q8z3K4+mv8ARyzWbSSrMaTodom8xyPMpsV55CO+SbZEq/4bhfpysq2261a2kN/2fPwre4Hc3F81V3RePnUahQ6fZOy9oZUbXazs3VYTK0cQlTKjLMX1mV+4hktE9rdvu1WytrpGux57LjyFvL/5iCv5C6S6rh5o+kJvIvfRr4eFfua1slBptQtDDh1ebqUNxeBb2Yng7ubeYl8mzUGxtpkVmdWoTlPiPJehsxl5kmSot6SuLml1n1XiN19NnqWzIpVIccqzmdw57yMOFJHzWy6fOvpEfSnLG5c7qS75qNivoemqTHahUZFRk90lvKWvB5z5o84+0FjWJceO0423rC0oxr5qbzu3jakDQbXHSvk1uE3+BClK+YMyqdpry3slVZDUoqnu2X/E7zBzlezrG84+iGyVH4yuVqRI9BNzSflvE+s5SLF0OG3NpEKnR48jDgkow4nfB4Z7zHNpCrm7QRKuMa7TSFm7H6TK5EbjZs2FTvDmPrTwfwcvaE/szoToUPjKxJkVFzwOY38C6BLqnbGDDdcjRWnJLkeU2xJwI7hmHdjO/lK8+9HgtHWpJ1aO5GqWrU+JWGIT6EITxqlERqvM+QuGnm9RjnkxRy6hcSeHlp9jPwabZ+zzDbbceFTm+Yjmp+Ziia9AmUPaMGTmNv4mWVoRwnHCM0YSI+m8j+AgtQousVyQ4005Ny6zCeRjxKwJMuGu8xkqXR7TR2o7caNGb1Ssy3vtK+C6y4tw0rK7qxl7xghsisuTNxJJYea1MobbjTUlvLWplesrxOYkHcoz94j8xzaEuzUjNzJE+epb3gpbJtZqbu6CLcR+cSCxFGnUinOQ5U1uTxzi0YEc29d/xH2esdrFWbqsZ2TGcbQ5gRGZawpU5cbit6N5mZco2WNiO0iRsRGVUWrJ2nrrkFvMhN09l7Vkc1MpxzA2ki6Me4SyzLlXd13aWUbWd9m4GWrDgLlL8d93TdcPtIsBFmUiRT3Ycj7Q8l957PPOU8RkaV4+W8riu6rh7Ts5UoVOyqO2005jx45mN3M38I177zM/b1Dp3eT6TSS6hZevEjltpMZuZT23ZrbeZmIyV83eaOMX5i3kRdJmQw9i6g1QNHjtoZWsyW33npXhKUlS7m+XrK7d5xMfqxJRTprUl2Qc2WypD0xCOFvIy4BHuIiIzuIYz6sXRKNT9d+x0xaV5OXhzcBXNke+7ce/zjm0bL4jeOaNlxPXHr0U4jkic25So+NOBczCnM3dBX8m8Y6uWTshayJrLkeNJzOZJjYcXxLlGDtFBtNrVUNuFrDk+SmKzMZcxORoJkWLAjdcs9/vNB9A+c2sQqfW240V2RCp9FQlnU2XlJ1l5RcWySC3GW/efWMHdKMvNG2w13bjRDWKOy5MoeZVYfPwfxkp9hc8vmNajrSHXnGYbbVY42qNs50lmAwpWUnluPl33XF57jEbt/o6pFr6dtmmZcKoOIxoewGlLl/Q4XQfnG6uXtjrskfu5zm8SywltXbKRJmrU6O5IfRwJK+clXep9nmEdrVMnUeouU6pxtWkN89H/wAr+n2jyCQekkSO5jx+U+1QlypkuRNkyXHJDnDWtffK/dw2vo/sPRKXZ3652u+74McaMvwe9vLpM+ghqIbZtXU3bd6PKXBobjesRMKJkDMJKtyLk3X8pDWpB1RWVY4Y+VfMjdptJFcqbrjdMd2NT8eBlmPhThSXWfSfoiTtU56uaEZddtDxsyItb0OSvuim0nyGfTfvGHspo6abe2jbObCp1PY4a2VvpzHfNy7iH30r6Qo1Yht2es9xVLY7/m5l3NSReANdhBkVZJFjtl8PWprHKa/bYC7/ANVztqAbZl3jT1JZXvtGjKzUjyeZKZ7VyxFUqy+5Cb16nyW9G1ChOxnNcn1OTNQzg4SW7uoQZIwcNPkWSNqfepUAHtoNHqdoKs3SqRCckTH+YhHe+kfUXnHReYmSSxxLk3KqnhxZfGDr6xtRlVCxlPqMqNJjSHIyVrZeQpKsV3Uf7MePRHoUpFm8urWgbaqVZ7zGjE2wr0CPp842fWacUpk8rcsv83mMdpLFt3kfPNa16C7mxj8NPM0o2+45W6FIguNyJEuNJXJxr4OZuxY/wHeVwwNVYi0iJMs9xs2oUzVJUNlCDU4q97NdW2jqv3ea4iG0ahZVpyrt1F1ua3IbxYEMrwp386+7lvuIZuLSJLj33bL9Nf6X/H4iEsMjcuJF75Gq+IgM2zs6qS6pIbNuE3PZjLZx8JTbja8e9Hw+Y9qbGUjW5EmdmTdYW2t5Dy+LzkERZmDoPcn4DZMShNtl9pczRjK6bbcs47eW222j/Mf7IdZLWSOPJjhHqG8bFTz02n6w7ltcX4Yx+kSc3ZShtuQY2u1SZJTDp7K+ap5fs6CIjM/YJjZxnLiZh89Y1n9IWemi1axVdk49Sg1jG8Zd7e2reJ9raxrFkxCWV5p8DS+mmp2voFs9lSbUVJz7M28taFpaTiO/FcRdG4ffRppttDZyW3GrDjtWpXf4+6tew+n2GN92xsFYzSYzDqspbjjhI4mTFcw409R8t5DV2jGx9jKPpfrFjqvGaq0yPhfgPSUJUnLwEakmRbsZX/IZ3LK3Kehi1Cymsmili51ob3sbamiWsorVVoc1qTGXwL0d4oucky6DISAlF1kYxMqlRXaE5SmS1OO4ypktW4pTaTK7g3chjkCPaq1WjW3lQhwa3JqMeBMUytmS+t1txPnIz3Hd4PIYmSS7vxHnrHTG1BmWHrTyO1vcIlaN6mN1VqG3JaKa4wp7Iv4SmyMsS7veQ1DL+krG2RdGs5J2hg/jPIy0q9pbz+A8P0dWbQ2v0j1G21bcccbyVMreNGFKlHzUILqIhHmrHcLgpIj0m4tUaeflpT9mx7T1ZqiUORWnYzkiPH4b2Tzsu8sSyLpu5fcPFTZNmbYRW5kbUqi3jSvH3zai6y5SP2iR1mG24UmFJ+7uIUyv8J/7DmK11lbS6MK43MgyXW47/wB2mM81SfFOF/QxSblsmX6S0so47jlyxbyN3KpdTs2zWajSG9ouPrclIjLRxinDRclGO/kLCMPT6hWKxUW6dTKtJOZHWldSkvIwtsbr8kmOUz/QWaLtJ8K05tUqrtNwqp3ni37u+R1H5hsiNDaXLvjRmsxzv0ILF7zHPFssTW4zt67JacTS/wBJqmxip9HquXly9ZVFWvwmzQa/kZfMaPHfEiztMm0p2l1OG3JjvoueQ6jElQ5x0uaEJtEN2qWUzZFPLhrjc5xhPo+EX6C07nIseRaaD2gt6f8AHk/s0ooE+MDEKiOe2ri68plLLU/bloafSpMlzLlvJQtfOw+zz7h6dINPpFDtDMhUiS5Ijx+AvO71zvk39QwjLjsd5txrinG140LRzk+D8xs0oGuvR6zaqwNe1heF7OgI4uX4JrR0GG7Yq7yelpNl5en3MD9UPVuANp/XFH/hRW//AGif9QGu6f0Int6X6Kfol+jWwVoJFqvrlbhuM3LQ3l0+msniTGSfOM1chqER09aHXi1i1VkoOYZ8OZT2UHiV6bZF09afgOkU3ERXC1xJLI7xe91jxxPnEGs3ME+/Vv8Aw4JsJZOr2zrjdKpDeZ370nBxbDfWs/0LpHYWjDR7RLEUnV4DROSXPvElfdHFf0LzCQ0ih0ukuSV0ynx4pyXs5420b3FH3xjKmMQ26xknV9fm1Hl6KAF4CSURbhFRUBriD5q5Bqm3i8y0LTfF8/BjWhKuXvSLlvO4958EiIbYUNR6QWXWLSlJaNw3OD4GFKcd/KZX37i/Ziv1HwqWOmfEqbSprZNU5pHUgRPTLZtq1FgahT3O6IazmV+A4jekxLKevNhtr9AYu3U9ql2Sqs13ubENxf8AlMS6bGhOELMtytV67ThaiWjtDRyupFWm070GX1YU+7kG0NCM2LWNNNLmQY0nM1VxcyTIeU65JcNssSzv5ty70jXVhrIVy19Qbp9IhZnhvL7m15zMdKfR3sBAsxtiouSddmNyXIGM0c1LZ8O72rv9xEK+3jkZsj6Br9zZRW9Vp8T7f9ko03WrqdkLCuVmkRSkSM5tC1L5rSTVvUf6e8hyDbCp0ysVHaMGmuQnJCFLkoxmpKnDMzxEZn1XDum0FOjVijyaVNaQ5HlMqZWj0TIcEUWNmVyFCd4xvXG2F+knMIh1vctuwgdkKw4SNjzLx/Bu76OdjtH9rKU45UqSUisQHftKHnlYVJPmrwX3XH/QdIUyDBp8NuLBjNR47ZcBDSMKfcObq9S16GNK9OtDTjcboFT4iU0XMbIz4Re7nl7FDpaK7rEcnG1ktC0cFXWJFtiq4lBrjtJJvVbajdCAaSkxm6g3rUnV28GPhr4KlFdhIy6RIWqTTbQWTbh1KM3Ijvo4aFt/06DEc0luut1CPlNZneY8glJT77yu/wBRNrOtk3SI1/gcMQ4Oa5Y4XDMlvGy9TQVp/o5yW6jrlla+cZvHjQzJbNRtq9FZb/iXvG87G0iTTaHGbqbrcioZKUyXkc1Si6vMM7duIhd5iMTqW8eWRwuNRuLhKLIxbhFrjeYPqBiQQehoLTjoYbq6nLQ2VaRHqnPeiILgSfOXUv8AX5lzLIS7HecbdadbcbWpC0LQpOFRc68v6D9ElXGRCD1TRjZSp2yj2plU/wC2x+8/huKLmrUXSZdYhz2mTZKer0jtPLaR7uXmp5GptAGiB1er2qtVBcbu4cOA8jhF4K3C6+oviOjkIImbsohehNzZEXILyMSI4ljUor/UJr6askh8sBdRAPuA34EPKoAAGTUoAqAAAAAAAAAKCAaSKdmux5DcZpx3mIzr8Kb++O7qE/GNr9PaqFOdjut5l6BFvIt5Fid7WXdybTE2BnlIpOrm6265H4C1o5oiH0nao5A0YyIjXdKm83CR+c+Ff+UjHkoapVm7RR4zUb7PwuAhasTvpXfvkEg0qWbK3dh3I0FxvWG1plQl97mIO9Px3kItpNnFu/MntGsN0snymR0Z2VgWUsdDp0GOTbhMpW8vxjhlwjO7lEBj2wrlGrlUolmrOuV2TtWfMmMpeS0tpnMLDdiO4zVfu8w+NvNNEGz9mG6dBjufWXJShcV5Ck6sq65S138pdQ0nZrShaqgWhqNcbcjTZk/CuSuSjnXJ4N13IRDrJcRpipZWOkXN3vJ6rt/k3TbPSpaqk2RrJ1ezjdKqiHm2IyM/HhbdSZpcMy5TK4927eNCaL6O7VLW05xppxyPAWmVJX3yW0LI1K9vJ8xmNKdtbS1+ouN1JyM1HfjMrWiMjDiSV60333neV5ja/wBGCymCwlUrslvjKtiZZ/lkRpv95/oOPxpNhcUT2RpzPVdjObL0r2VatjYCZSmkNnINrOhrX3rpb0e7o9hjFfR9rS6horp652Y27AzIbhL5yVNHhuPzkVxe4S+ykjWbLU9xzl1ZOP3FcIAuoavRKqimN5cefVZS1vI5rW8kYt3WaDP3iTcSLCuZ5GBXmTcfcpPanVe3H95bb4ONHAy1J73kXjuvIbYiIy2EI8whejylSchuZPczHEI4HA8wnSdxXDjYRMvvG8zS+kVtka/KXAACyIAAAAFAwioACiRUAAAAAAAAAAAAAAAAAAAAAFFCoACMWuoO1YbmU4bTh8/D3yfBv84gcCuVezEuSTsZxyO3hXk96lu4i3H147xuBJee8YqtUODVGVtyW9wrbi05t5GT7e7VV3cnGhEavSbD2/aJquU6M6+XhlhdT+Yt/wAxrTSB9HuCUXXLIyHMbfPgSV4kuJv4SUr5SPl5Rseo2LksZeq5bjbcnP8AzXf/AJ8B4aW1aGBmR5WsHxKkIX3qlY1mk+xhEZpm8MiFpbXEkPNby8PQ0bXtHNpa3pDbhxochuFPwrRJWg8MZkrkqSvqWRldd0ncOq6VHptnKDDpcdbbUSIyllBeikrhr6mP2lXLb1lchyHgTj3cLFuxX/P4C6HZSuTPvUlxznIXncJKk33Jv91xhHc4/DU6380l3RVmflU8lVrdXgxV0OkuR2oa3lLQ9mLTIUyazxIbxowE4V/SZ9ZDI2CstJUmO7KZOPlspRuXhzUkVycZFuvu5eUSmh2PgwCvcLM9DHiT19PnEpaaJsuAO0dtJM2UhVyXkca4Qlsdko7TbTXMIfcVAWeJVgAAbAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACgqAAphFmWQ+gDXEHyS00LssXgM40G0phAVAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABRQqKKAFEmLhGaJOyLLurbcbckN6yvBj4RqJxZj4O1SdHaK+U1IzGW152DuGNZFed3Rv+QAlmIBFE1STtB2n65HyylNsok4C4KTbxXdV9+73j3RJUqRRKgbRk5Ibzm2Vp/iKIuCYAzuIBqjaUb/F5v+cABtcBEdnyfGudtQbPk+Nc7agBLgER2fJ8a521Bs+T41ztqAEuARHZ8nxrnbUGz5PjXO2oAS4BEdnyfGudtQbPk+Nc7agBLgER2fJ8a521Bs+T41ztqAEuARHZ8nxrnbUGz5PjXO2oAS4BEdnyfGudtQbPk+Nc7agBLgER2fJ8a521Bs+T41ztqAEuARHZ8nxrnbUGz5PjXO2oAS4BEdnyfGudtQbPk+Nc7agBLgER2fJ8a521Bs+T41ztqAEuARHZ8nxrnbUGz5PjXO2oASFunQW3cxuFGzPDwFi3+4fORTI2puR4rbcPM79psv06RgtnyfGudtQbPk+Nk9tQAy1OosaM1IbdJuTnrStZLZSlO4rklhIrhk2GWm2spttDbfgpEW2fJ8a521Bs+T41ztqAEry2vAQAimz5PjXO2oABJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf//Z" alt="Logo Asoganaderos Facatativá">
+      <div class="logo-texto">
+        <h1>Asoganaderos<br>Facatativá</h1>
+        <span>SIS-INFO v1.0</span>
+      </div>
+    </div>
+    <h2 class="izq-titulo">Sistema de<br>Información<br><em>Seguro</em></h2>
+    <p class="izq-desc">Plataforma integral para la administración y protección de datos ganaderos. Acceso restringido por rol con encriptación y auditoría completa.</p>
+    <div class="modulos-grid">
+      <div class="mod-chip"><span class="dot dot-rojo"></span> Administrador</div>
+      <div class="mod-chip"><span class="dot dot-verde"></span> Veterinario</div>
+      <div class="mod-chip"><span class="dot dot-azul"></span> Empleado</div>
+      <div class="mod-chip"><span class="dot dot-naranja"></span> Ganadero</div>
+      <div class="mod-chip"><span class="dot dot-naranja"></span> Fincas</div>
+      <div class="mod-chip"><span class="dot dot-verde"></span> Vacunación</div>
+      <div class="mod-chip"><span class="dot dot-rojo"></span> Producción</div>
+      <div class="mod-chip"><span class="dot dot-azul"></span> Auditoría</div>
+    </div>
+    <div class="sello">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      bcrypt · AES-256-CBC · Llave única Admin · Auditoría
+    </div>
+  </div>
+
+  <!-- COL DERECHA -->
+  <div class="col-der">
+    <div class="card">
+      <div class="card-head">
+        <h2>Iniciar sesión</h2>
+        <p>Selecciona tu rol y accede con tus credenciales</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs-rol">
+        <button class="tab-btn active" data-rol="admin" onclick="cambiarRol(this)">
+          <span class="ico-tab">🔐</span>Admin
+        </button>
+        <button class="tab-btn" data-rol="veterinario" onclick="cambiarRol(this)">
+          <span class="ico-tab">🩺</span>Vet.
+        </button>
+        <button class="tab-btn" data-rol="empleado" onclick="cambiarRol(this)">
+          <span class="ico-tab">👨‍💼</span>Empleado
+        </button>
+        <button class="tab-btn" data-rol="ganadero" onclick="cambiarRol(this)">
+          <span class="ico-tab">👨‍🌾</span>Ganadero
+        </button>
+      </div>
+
+      <div class="alerta" id="alerta">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="alerta-txt">Credenciales incorrectas.</span>
+      </div>
+
+      <!-- Correo -->
+      <div class="campo">
+        <label>Correo institucional</label>
+        <div class="inp-wrap">
+          <input type="email" id="correo" placeholder="usuario@asoganaderos.com" autocomplete="email">
+          <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+        </div>
+        <p class="msg-err" id="e-correo">Ingresa un correo válido.</p>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="campo">
+        <label>Contraseña</label>
+        <div class="inp-wrap">
+          <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
+          <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <button class="toggle-pass" type="button" id="tog-pass">
+            <svg id="ojo" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <p class="msg-err" id="e-pass">La contraseña es requerida.</p>
+      </div>
+
+      <!-- Llave Admin -->
+      <div class="llave-campo visible" id="campo-llave">
+        <div class="llave-header">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2.2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          <label>Llave de administrador</label>
+          <span class="llave-badge">🔑 REQUERIDA</span>
+        </div>
+        <div class="inp-wrap">
+          <input type="password" id="llave" placeholder="Tu llave única de 32 caracteres" autocomplete="off">
+          <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="1.8"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </div>
+        <p class="msg-err" id="e-llave">Llave de administrador incorrecta.</p>
+      </div>
+
+      <button class="btn btn-admin" id="btn-ing" type="button" onclick="login()">
+        <svg class="spinner" viewBox="0 0 24 24"></svg>
+        <span id="btn-txt">Ingresar como Administrador</span>
+      </button>
+
+      <!-- Enlace registro ganadero -->
+      <div class="registro-link" id="link-registro" style="display:none;">
+        ¿Eres ganadero y no tienes cuenta?
+        <a onclick="abrirRegistro()">Regístrate aquí</a>
+      </div>
+
+      <div class="nota">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0522d" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span><strong>Seguridad:</strong> Contraseñas con <strong>bcrypt (cost 12)</strong>. Datos sensibles con <strong>AES-256-CBC</strong>. Admin con <strong>llave única adicional</strong>.</span>
+      </div>
+
+      <div class="demo-wrap">
+        <p class="demo-label">Acceso rápido (demo)</p>
+        <div class="demo-row">
+          <button class="demo-btn d-admin" onclick="demo('wilmer.merchan@asoganaderos.com','WilmerAdmin2024!','admin','eakuQB4TvpO4iR3pF6dbN1EGs+hH0fs4')">🔐 Admin 1</button>
+          <button class="demo-btn d-admin" onclick="demo('admin.sistema@asoganaderos.com','SistemaAdmin2024!','admin','9O9NzgbihuG9yTBx1CRpzxGss82q8ZGR')">🔐 Admin 2</button>
+          <button class="demo-btn d-vet"   onclick="demo('juan.garcia@asoganaderos.com','JuanVet2024!','veterinario','')">🩺 Vet 1</button>
+          <button class="demo-btn d-vet"   onclick="demo('carlos.vega@asoganaderos.com','CarlosVet2024!','veterinario','')">🩺 Vet 2</button>
+          <button class="demo-btn d-emp"   onclick="demo('maria.lopez@asoganaderos.com','MariaEmp2024!','empleado','')">👨‍💼 Emp 1</button>
+          <button class="demo-btn d-emp"   onclick="demo('luisa.mora@asoganaderos.com','LuisaEmp2024!','empleado','')">👨‍💼 Emp 2</button>
+          <button class="demo-btn d-gan"   onclick="demo('carlos.hernandez@gmail.com','CarlosGan2024!','ganadero','')">👨‍🌾 Gan 1</button>
+          <button class="demo-btn d-gan"   onclick="demo('luis.martinez@gmail.com','LuisGan2024!','ganadero','')">👨‍🌾 Gan 2</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REGISTRO GANADERO -->
+<div class="modal-bg" id="modal-registro">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Registro de Ganadero</h3>
+      <button class="btn-cerrar" onclick="cerrarRegistro()">✕</button>
+    </div>
+    <div class="modal-nota">
+      👨‍🌾 El registro de ganadero está disponible para todos.
+      Los roles de <strong>Administrador, Veterinario y Empleado</strong>
+      solo los asigna el administrador del sistema.
+    </div>
+    <div class="campo">
+      <label>Nombre completo</label>
+      <div class="inp-wrap">
+        <input type="text" id="r-nombre" placeholder="Ej: Carlos Hernández">
+        <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Correo electrónico</label>
+      <div class="inp-wrap">
+        <input type="email" id="r-correo" placeholder="tucorreo@gmail.com">
+        <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Cédula</label>
+      <div class="inp-wrap">
+        <input type="text" id="r-cedula" placeholder="Número de cédula">
+        <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Teléfono</label>
+      <div class="inp-wrap">
+        <input type="tel" id="r-tel" placeholder="Ej: 3101234567">
+        <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+    </div>
+    <div class="campo">
+      <label>Contraseña</label>
+      <div class="inp-wrap">
+        <input type="password" id="r-pass" placeholder="Mínimo 8 caracteres">
+        <svg class="ico-campo" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+    </div>
+    <button class="btn-registrar" onclick="registrarGanadero()">Crear cuenta de Ganadero</button>
+  </div>
+</div>
+
+<!-- OVERLAY ÉXITO -->
+<div class="overlay-ok" id="overlay-ok">
+  <div class="ok-circulo" id="ok-circulo">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h3 id="ok-titulo">Bienvenido</h3>
+  <p id="ok-sub">Redirigiendo al panel de control…</p>
+</div>
+
+<script>
+const USUARIOS = {
+  "wilmer.merchan@asoganaderos.com": {pass:"WilmerAdmin2024!", rol:"admin",      nombre:"Wilmer Merchan",   llave:"eakuQB4TvpO4iR3pF6dbN1EGs+hH0fs4"},
+  "admin.sistema@asoganaderos.com":  {pass:"SistemaAdmin2024!",rol:"admin",      nombre:"Admin Sistema",    llave:"9O9NzgbihuG9yTBx1CRpzxGss82q8ZGR"},
+  "juan.garcia@asoganaderos.com":    {pass:"JuanVet2024!",     rol:"veterinario",nombre:"Juan García"},
+  "carlos.vega@asoganaderos.com":    {pass:"CarlosVet2024!",   rol:"veterinario",nombre:"Carlos Vega"},
+  "maria.lopez@asoganaderos.com":    {pass:"MariaEmp2024!",    rol:"empleado",   nombre:"María López"},
+  "luisa.mora@asoganaderos.com":     {pass:"LuisaEmp2024!",    rol:"empleado",   nombre:"Luisa Mora"},
+  "carlos.hernandez@gmail.com":      {pass:"CarlosGan2024!",   rol:"ganadero",   nombre:"Carlos Hernández"},
+  "luis.martinez@gmail.com":         {pass:"LuisGan2024!",     rol:"ganadero",   nombre:"Luis Martínez"},
+};
+
+const BTNS  = {admin:"btn-admin",veterinario:"btn-vet",empleado:"btn-emp",ganadero:"btn-gan"};
+const TXTS  = {admin:"Ingresar como Administrador",veterinario:"Ingresar como Veterinario",empleado:"Ingresar como Empleado",ganadero:"Ingresar como Ganadero"};
+const COLORES = {admin:"#c0392b",veterinario:"#1e7e4a",empleado:"#1a6fa8",ganadero:"#e8622a"};
+let rolActual = "admin";
+
+function cambiarRol(btn) {
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  rolActual = btn.dataset.rol;
+  const llaveCampo  = document.getElementById("campo-llave");
+  const linkReg     = document.getElementById("link-registro");
+  const btnEl       = document.getElementById("btn-ing");
+  const txtEl       = document.getElementById("btn-txt");
+  llaveCampo.classList.toggle("visible", rolActual === "admin");
+  linkReg.style.display = rolActual === "ganadero" ? "block" : "none";
+  btnEl.className = "btn " + BTNS[rolActual];
+  txtEl.textContent = TXTS[rolActual];
+  limpiar();
+}
+
+document.getElementById("tog-pass").onclick = function() {
+  const inp = document.getElementById("pass");
+  const ico = document.getElementById("ojo");
+  if (inp.type === "password") {
+    inp.type = "text";
+    ico.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  } else {
+    inp.type = "password";
+    ico.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
+};
+
+function demo(c,p,r,l) {
+  document.querySelector(`.tab-btn[data-rol="${r}"]`).click();
+  document.getElementById("correo").value = c;
+  document.getElementById("pass").value   = p;
+  if (l) document.getElementById("llave").value = l;
+  limpiar();
+}
+
+function limpiar() {
+  ["correo","pass","llave"].forEach(id => {
+    const el = document.getElementById(id); if(el) el.classList.remove("err");
+  });
+  ["e-correo","e-pass","e-llave"].forEach(id => {
+    const el = document.getElementById(id); if(el) el.classList.remove("v");
+  });
+  document.getElementById("alerta").classList.remove("v");
+}
+
+["correo","pass","llave"].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener("input", limpiar);
+});
+
+function login() {
+  const correo = document.getElementById("correo").value.trim();
+  const pass   = document.getElementById("pass").value;
+  const llave  = rolActual === "admin" ? document.getElementById("llave").value.trim() : null;
+  let ok = true;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+    document.getElementById("correo").classList.add("err");
+    document.getElementById("e-correo").classList.add("v"); ok = false;
+  }
+  if (!pass) {
+    document.getElementById("pass").classList.add("err");
+    document.getElementById("e-pass").classList.add("v"); ok = false;
+  }
+  if (rolActual === "admin" && !llave) {
+    document.getElementById("llave").classList.add("err");
+    document.getElementById("e-llave").classList.add("v"); ok = false;
+  }
+  if (!ok) return;
+
+  const btn = document.getElementById("btn-ing");
+  const txt = document.getElementById("btn-txt");
+  btn.disabled = true; btn.classList.add("loading"); txt.textContent = "Verificando…";
+
+  setTimeout(() => {
+    btn.disabled = false; btn.classList.remove("loading"); txt.textContent = TXTS[rolActual];
+    const u = USUARIOS[correo];
+    let err = !u || u.pass !== pass || u.rol !== rolActual;
+    if (rolActual === "admin" && u && u.llave !== llave) err = true;
+    if (err) {
+      document.getElementById("alerta-txt").textContent = rolActual === "admin"
+        ? "Correo, contraseña o llave de administrador incorrectos."
+        : "Correo o contraseña incorrectos.";
+      document.getElementById("alerta").classList.add("v");
+      document.getElementById("correo").classList.add("err");
+      document.getElementById("pass").classList.add("err");
+      return;
+    }
+    const colores = {admin:"admin-c",veterinario:"vet-c",empleado:"emp-c",ganadero:"gan-c"};
+    const nombres = {admin:"Administrador",veterinario:"Veterinario",empleado:"Empleado",ganadero:"Ganadero"};
+    const circ = document.getElementById("ok-circulo");
+    circ.style.background = COLORES[rolActual];
+    document.getElementById("ok-titulo").textContent = "Bienvenido, " + u.nombre;
+    document.getElementById("ok-sub").textContent = "Redirigiendo al panel de " + nombres[rolActual] + "…";
+    document.getElementById("overlay-ok").classList.add("v");
+    setTimeout(() => { window.location.href = "dashboard.html"; }, 1800);
+  }, 1200);
+}
+
+function abrirRegistro()  { document.getElementById("modal-registro").classList.add("v"); }
+function cerrarRegistro() { document.getElementById("modal-registro").classList.remove("v"); }
+
+function registrarGanadero() {
+  const nombre = document.getElementById("r-nombre").value.trim();
+  const correo = document.getElementById("r-correo").value.trim();
+  const cedula = document.getElementById("r-cedula").value.trim();
+  const tel    = document.getElementById("r-tel").value.trim();
+  const pass   = document.getElementById("r-pass").value;
+  if (!nombre || !correo || !cedula || !pass) {
+    alert("Por favor completa todos los campos obligatorios.");
+    return;
+  }
+  // TODO PHP: INSERT INTO ganaderos + INSERT INTO usuarios (rol=ganadero)
+  // password_hash($pass, PASSWORD_BCRYPT, ['cost'=>12])
+  // Los datos sensibles (cédula, teléfono) → openssl_encrypt(AES-256-CBC)
+  cerrarRegistro();
+  document.getElementById("ok-titulo").textContent = "¡Cuenta creada!";
+  document.getElementById("ok-sub").textContent = "Tu cuenta de ganadero fue registrada. Espera confirmación.";
+  document.getElementById("ok-circulo").style.background = "#e8622a";
+  document.getElementById("overlay-ok").classList.add("v");
+  setTimeout(() => { document.getElementById("overlay-ok").classList.remove("v"); }, 2500);
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+</script>
+</body>
+</html>
