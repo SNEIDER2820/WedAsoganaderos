@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asoganaderos Facatativá — Panel de Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════ VARIABLES ═══════════════════ */
+:root{
+  --bg:        #f7f2ea;
+  --bg2:       #f0e9dd;
+  --panel:     #fffdf9;
+  --borde:     #e2d5c3;
+  --texto:     #2c1a0e;
+  --suave:     #7a5c4a;
+  --muy-suave: #b8a090;
+  --naranja:   #e8622a;
+  --naranja-p: #fde8dc;
+  --rojo:      #c0392b;
+  --rojo-p:    #fde8e6;
+  --verde:     #1e7e4a;
+  --verde-p:   #e6f5ec;
+  --azul:      #1a6fa8;
+  --azul-p:    #e6f2fa;
+  --oro:       #c98a2a;
+  --oro-p:     #fef3dc;
+  --sidebar-w: 230px;
+  --nav-h:     54px;
+  --radio:     10px;
+  --sombra:    0 2px 12px rgba(44,26,14,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--texto);min-height:100vh;overflow-x:hidden;}
+
+/* ═══════════════════ NAVBAR ═══════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:100;
+  background:var(--texto);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem 0 calc(var(--sidebar-w) + 1.5rem);
+  border-bottom:2px solid var(--naranja);
+}
+.nav-lema{
+  font-family:'DM Sans',sans-serif;font-style:italic;
+  font-size:12px;color:rgba(255,255,255,.45);
+  letter-spacing:.02em;max-width:420px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.nav-lema strong{color:rgba(255,255,255,.7);font-style:normal;}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-usuario{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:13px;color:rgba(255,255,255,.75);
+}
+.nav-avatar{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--naranja);color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;
+}
+.nav-rol-badge{
+  font-size:10px;font-weight:600;padding:2px 9px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:.07em;
+}
+.badge-admin{background:rgba(192,57,43,.25);color:#f4918a;}
+.badge-vet  {background:rgba(30,126,74,.25);color:#7de0a0;}
+.badge-emp  {background:rgba(26,111,168,.25);color:#80c4f0;}
+.badge-gan  {background:rgba(232,98,42,.25);color:#f4b07a;}
+.btn-salir{
+  background:transparent;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.6);padding:5px 12px;border-radius:6px;
+  font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;
+  transition:all .15s;
+}
+.btn-salir:hover{background:rgba(255,255,255,.1);color:white;}
+
+/* ═══════════════════ SIDEBAR ═══════════════════ */
+aside{
+  position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);
+  background:var(--texto);z-index:99;
+  display:flex;flex-direction:column;
+  padding-top:var(--nav-h);
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.side-logo{
+  padding:1.25rem 1.25rem 1rem;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:.75rem;
+}
+.side-logo-img{
+  width:40px;height:40px;border-radius:8px;
+  object-fit:cover;border:1.5px solid rgba(232,98,42,.4);
+}
+.side-logo-txt{line-height:1.2;}
+.side-logo-txt strong{
+  font-family:'Playfair Display',serif;font-size:13px;
+  color:white;display:block;
+}
+.side-logo-txt span{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.05em;}
+
+.side-section{
+  font-size:9.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;color:rgba(255,255,255,.3);
+  padding:.9rem 1.25rem .35rem;
+}
+.side-link{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.55rem 1.25rem;color:rgba(255,255,255,.5);
+  font-size:13px;text-decoration:none;cursor:pointer;
+  border-left:2.5px solid transparent;transition:all .15s;
+  position:relative;
+}
+.side-link:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.05);}
+.side-link.activo{
+  color:white;background:rgba(232,98,42,.12);
+  border-left-color:var(--naranja);
+}
+.side-link .s-ico{font-size:15px;width:18px;text-align:center;}
+.side-link .s-pronto{
+  margin-left:auto;font-size:9px;padding:2px 6px;border-radius:3px;
+  background:rgba(232,98,42,.2);color:var(--naranja);font-weight:600;
+}
+.side-bottom{
+  margin-top:auto;padding:1rem 1.25rem;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.side-version{font-size:10px;color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;}
+
+/* ═══════════════════ MAIN ═══════════════════ */
+main{
+  margin-left:var(--sidebar-w);
+  padding-top:calc(var(--nav-h) + 1.75rem);
+  padding-right:1.75rem;
+  padding-left:1.75rem;
+  padding-bottom:2.5rem;
+  min-height:100vh;
+}
+.page{display:none;}
+.page.activo{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══════════════════ TIPOGRAFÍA DE PÁGINA ═══════════════════ */
+.page-header{margin-bottom:1.75rem;}
+.page-titulo{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:var(--texto);
+  line-height:1.2;margin-bottom:.25rem;
+}
+.page-sub{font-size:13px;color:var(--suave);}
+
+/* ═══════════════════ GRID DE STATS ═══════════════════ */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem;}
+.stat-card{
+  background:var(--panel);border:1px solid var(--borde);
+  border-radius:var(--radio);padding:1.1rem 1.25rem;
+  box-shadow:var(--sombra);position:relative;overflow:hidden;
+}
+.stat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.stat-card.s-naranja::before{background:var(--naranja);}
+.stat-card.s-verde  ::before{background:var(--verde);}
+.stat-card.s-azul   ::before{background:var(--azul);}
+.stat-card.s-rojo   ::before{background:var(--rojo);}
+.stat-card.s-oro    ::before{background:var(--oro);}
+.stat-lbl{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--suave);margin-bottom:.5rem;}
+.stat-val{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--texto);line-height:1;}
+.stat-sub{font-size:11px;color:var(--muy-suave);margin-top:.35rem;}
+.stat-ico{
+  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  font-size:32px;opacity:.1;
+}
+
+/* ═══════════════════ GRIDS DE PANELES ═══════════════════ */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:1.5rem;}
+
+/* ═══════════════════ PANEL BASE ═══════════════════ */
+.panel{
+  background:var(--panel);border:1px solid var(--borde);
+  border-radius:var(--radio);overflow:hidden;box-shadow:var(--sombra);
+}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;border-bottom:1px solid var(--borde);
+  background:var(--bg2);
+}
+.panel-head h3{font-size:13px;font-weight:600;color:var(--texto);}
+.panel-tag{
+  font-size:10px;font-family:'DM Mono',monospace;
+  color:var(--verde);background:var(--verde-p);
+  padding:2px 8px;border-radius:4px;
+}
+.panel-body{padding:1.1rem 1.25rem;}
+
+/* ═══════════════════ TABLA ═══════════════════ */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{
+  text-align:left;padding:8px 10px;font-size:10.5px;font-weight:600;
+  color:var(--suave);text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:1px solid var(--borde);white-space:nowrap;
+}
+td{padding:9px 10px;border-bottom:1px solid #f0e9dd;color:var(--texto);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+.badge{
+  display:inline-block;font-size:10px;font-weight:600;
+  padding:2px 8px;border-radius:4px;white-space:nowrap;
+}
+.b-verde  {background:var(--verde-p);color:var(--verde);}
+.b-naranja{background:var(--naranja-p);color:#c44e1e;}
+.b-rojo   {background:var(--rojo-p);color:var(--rojo);}
+.b-azul   {background:var(--azul-p);color:var(--azul);}
+.b-oro    {background:var(--oro-p);color:var(--oro);}
+.b-gris   {background:#f0ece6;color:#888;}
+
+/* ═══════════════════ BARRA DE PROGRESO ═══════════════════ */
+.prog-wrap{margin-bottom:.9rem;}
+.prog-top{display:flex;justify-content:space-between;font-size:12px;color:var(--suave);margin-bottom:4px;}
+.prog-bar{background:var(--bg2);border-radius:3px;height:5px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+
+/* ═══════════════════ ACTIVIDAD ═══════════════════ */
+.act-item{
+  display:flex;gap:.75rem;padding:.65rem 0;
+  border-bottom:1px solid var(--bg2);font-size:12.5px;
+}
+.act-item:last-child{border-bottom:none;}
+.act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.act-txt{flex:1;color:var(--texto);line-height:1.4;}
+.act-txt span{display:block;font-size:11px;color:var(--muy-suave);margin-top:2px;}
+.act-hora{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--muy-suave);white-space:nowrap;}
+
+/* ═══════════════════ ALERTAS ═══════════════════ */
+.alerta-item{
+  display:flex;gap:.75rem;align-items:flex-start;
+  padding:.7rem .9rem;border-radius:8px;margin-bottom:.6rem;
+  font-size:12.5px;
+}
+.alerta-item:last-child{margin-bottom:0;}
+.al-naranja{background:var(--naranja-p);border-left:3px solid var(--naranja);}
+.al-rojo   {background:var(--rojo-p);border-left:3px solid var(--rojo);}
+.al-verde  {background:var(--verde-p);border-left:3px solid var(--verde);}
+.al-ico{font-size:16px;flex-shrink:0;}
+.al-txt strong{display:block;font-weight:600;margin-bottom:2px;}
+.al-txt span{color:var(--suave);}
+
+/* ═══════════════════ BANNER NOTICIA ═══════════════════ */
+.banner-noticia{
+  border-radius:var(--radio);overflow:hidden;
+  border:1px solid var(--borde);box-shadow:var(--sombra);
+  display:flex;margin-bottom:1.5rem;background:var(--panel);
+}
+.banner-img{width:200px;flex-shrink:0;object-fit:cover;}
+.banner-body{padding:1.25rem 1.5rem;display:flex;flex-direction:column;justify-content:center;}
+.banner-tag{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--verde);margin-bottom:.5rem;
+}
+.banner-titulo{
+  font-family:'Playfair Display',serif;font-size:17px;font-weight:700;
+  color:var(--texto);line-height:1.3;margin-bottom:.6rem;
+}
+.banner-desc{font-size:12.5px;color:var(--suave);line-height:1.6;margin-bottom:.75rem;}
+.banner-meta{font-size:11px;color:var(--muy-suave);}
+
+/* ═══════════════════ LEMA BANNER ═══════════════════ */
+.lema-banner{
+  background:linear-gradient(135deg,var(--texto) 0%,#4a2c1a 100%);
+  border-radius:var(--radio);padding:1.25rem 1.75rem;
+  display:flex;align-items:center;gap:1.25rem;
+  margin-bottom:1.5rem;box-shadow:var(--sombra);
+  border-left:4px solid var(--naranja);
+}
+.lema-ico{font-size:28px;flex-shrink:0;}
+.lema-txt strong{
+  font-family:'Playfair Display',serif;font-size:15px;
+  color:white;display:block;margin-bottom:3px;font-style:italic;
+}
+.lema-txt span{font-size:11.5px;color:rgba(255,255,255,.45);}
+
+/* ═══════════════════ MAPA PLACEHOLDER ═══════════════════ */
+.mapa-placeholder{
+  background:linear-gradient(135deg,#e8f5ec,#d4edda);
+  border-radius:8px;height:200px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:.5rem;
+  border:1px dashed #a8d4b4;
+  font-size:13px;color:var(--verde);
+}
+
+/* ═══════════════════ CHIPS TIPO FINCA ═══════════════════ */
+.tipo-chips{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap;}
+.tipo-chip{
+  font-size:11.5px;font-weight:500;padding:4px 12px;border-radius:100px;
+  cursor:pointer;transition:all .15s;border:1px solid var(--borde);
+  background:var(--panel);color:var(--suave);
+}
+.tipo-chip.activo{background:var(--naranja);color:white;border-color:var(--naranja);}
+
+/* ═══════════════════ PAGINACIÓN ═══════════════════ */
+.paginacion{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-top:1px solid var(--borde);font-size:12px;color:var(--suave);}
+.pag-btns{display:flex;gap:4px;}
+.pag-btn{
+  width:28px;height:28px;border-radius:6px;border:1px solid var(--borde);
+  background:var(--panel);color:var(--suave);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.pag-btn:hover{background:var(--bg2);}
+.pag-btn.activo{background:var(--naranja);color:white;border-color:var(--naranja);}
+
+/* ═══════════════════ FORMULARIO ═══════════════════ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-full{grid-column:1/-1;}
+.f-grupo{margin-bottom:0;}
+.f-grupo label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--suave);margin-bottom:.35rem;}
+.f-grupo input,.f-grupo select,.f-grupo textarea{
+  width:100%;padding:9px 12px;border:1.5px solid var(--borde);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:13px;color:var(--texto);
+  background:white;outline:none;transition:border-color .2s,box-shadow .2s;
+  appearance:none;
+}
+.f-grupo input:focus,.f-grupo select:focus,.f-grupo textarea:focus{
+  border-color:var(--naranja);box-shadow:0 0 0 3px rgba(232,98,42,.1);
+}
+.f-grupo textarea{resize:vertical;min-height:80px;}
+.form-actions{display:flex;gap:8px;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--borde);}
+.btn-prim{
+  padding:9px 20px;border:none;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+  background:var(--naranja);color:white;transition:all .15s;
+}
+.btn-prim:hover{background:#c44e1e;transform:translateY(-1px);}
+.btn-sec{
+  padding:9px 20px;border:1px solid var(--borde);border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;
+  background:white;color:var(--suave);transition:all .15s;
+}
+.btn-sec:hover{background:var(--bg2);}
+.btn-verde{background:var(--verde);color:white;}
+.btn-verde:hover{background:#165c35;}
+.btn-rojo{background:var(--rojo);color:white;}
+.btn-rojo:hover{background:#9b2335;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--borde);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav>
+  <p class="nav-lema">
+    <strong>"Conocimiento que conecta regiones</strong> y fortalece territorios" — Asoganaderos Facatativá
+  </p>
+  <div class="nav-right">
+    <div class="nav-usuario">
+      <div class="nav-avatar" id="nav-avatar">W</div>
+      <span id="nav-nombre">Wilmer Merchan</span>
+      <span class="nav-rol-badge badge-admin" id="nav-badge">ADMIN</span>
+    </div>
+    <button class="btn-salir" onclick="window.location.href='login.html'">Cerrar sesión</button>
+  </div>
+</nav>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside>
+  <div class="side-logo">
+    <img class="side-logo-img" src="data:image/jpeg;base64,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" alt="Logo">
+    <div class="side-logo-txt">
+      <strong>Asoganaderos</strong>
+      <span>SIS-INFO v1.0</span>
+    </div>
+  </div>
+
+  <div class="side-section">Principal</div>
+  <a class="side-link activo" onclick="irA('dashboard',this)"><span class="s-ico">▣</span> Dashboard</a>
+  <a class="side-link" onclick="irA('fincas',this)"><span class="s-ico">🌿</span> Fincas</a>
+  <a class="side-link" onclick="irA('ganado',this)"><span class="s-ico">🐄</span> Ganado</a>
+
+  <div class="side-section">Gestión</div>
+  <a class="side-link" onclick="irA('vacunacion',this)"><span class="s-ico">💉</span> Vacunación</a>
+  <a class="side-link" onclick="irA('produccion',this)"><span class="s-ico">📈</span> Producción</a>
+  <a class="side-link" onclick="irA('atenciones',this)"><span class="s-ico">💬</span> Atenciones</a>
+
+  <div class="side-section">Sistema</div>
+  <a class="side-link" onclick="irA('auditoria',this)"><span class="s-ico">🛡️</span> Auditoría</a>
+  <a class="side-link" onclick="irA('usuarios',this)"><span class="s-ico">👥</span> Usuarios</a>
+
+  <div class="side-bottom">
+    <p class="side-version">asoganaderos_facatativa · v1.0</p>
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════════ -->
+<div id="pg-dashboard" class="page activo">
+
+  <!-- Lema banner -->
+  <div class="lema-banner">
+    <span class="lema-ico">🐄</span>
+    <div class="lema-txt">
+      <strong>"Conocimiento que conecta regiones y fortalece territorios"</strong>
+      <span>Asoganaderos Facatativá · Sistema de Información Seguro · Región Orinoquia colombiana</span>
+    </div>
+  </div>
+
+  <!-- Banner noticia Contexto Ganadero -->
+  <div class="banner-noticia">
+    <img class="banner-img" src="https://a.storyblok.com/f/160385/ea94df3dd6/asoganaderos_logo_asoganaderos.jpg/m/?w=256&q=100" alt="Asoganaderos apoya revacunación"
+         onerror="this.style.display='none'">
+    <div class="banner-body">
+      <p class="banner-tag">🛡️ Sanidad animal · CONtexto Ganadero</p>
+      <h3 class="banner-titulo">Asoganaderos apoya revacunación de emergencia contra Fiebre Aftosa</h3>
+      <p class="banner-desc">La entidad gremial reafirma su compromiso con la recuperación del estatus sanitario del país como libre con vacunación. El control y la erradicación de la fiebre aftosa es compromiso de todos.</p>
+      <p class="banner-meta">Arauca · Boyacá · Casanare · Cundinamarca · Cesar · La Guajira</p>
+    </div>
+  </div>
+
+  <div class="page-header">
+    <h1 class="page-titulo">Panel de control</h1>
+    <p class="page-sub">Resumen general · Región Orinoquia colombiana · 2025</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card s-naranja">
+      <p class="stat-lbl">Fincas registradas</p>
+      <p class="stat-val">100</p>
+      <p class="stat-sub">68 peq · 22 med · 10 gran</p>
+      <span class="stat-ico">🌿</span>
+    </div>
+    <div class="stat-card s-verde">
+      <p class="stat-lbl">Cabezas de ganado</p>
+      <p class="stat-val">3.655</p>
+      <p class="stat-sub">↑ 142 este mes</p>
+      <span class="stat-ico">🐄</span>
+    </div>
+    <div class="stat-card s-rojo">
+      <p class="stat-lbl">Vacunas pendientes</p>
+      <p class="stat-val">47</p>
+      <p class="stat-sub">Próximos 30 días</p>
+      <span class="stat-ico">💉</span>
+    </div>
+    <div class="stat-card s-azul">
+      <p class="stat-lbl">Ganaderos activos</p>
+      <p class="stat-val">30</p>
+      <p class="stat-sub">Meta · Casanare · Arauca</p>
+      <span class="stat-ico">👨‍🌾</span>
+    </div>
+  </div>
+
+  <div class="grid-3-1">
+    <!-- Tabla fincas recientes -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Fincas registradas — últimas</h3>
+        <span class="panel-tag">tabla: fincas</span>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Nombre</th><th>Municipio</th><th>Tipo</th><th>Hectáreas</th><th>Cabezas</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td><strong>El Paraíso</strong></td><td>Villavicencio, Meta</td><td><span class="badge b-naranja">Pequeña</span></td><td>32.5 ha</td><td>12</td><td><span class="badge b-verde">Activa</span></td></tr>
+            <tr><td><strong>La Esperanza</strong></td><td>Yopal, Casanare</td><td><span class="badge b-azul">Mediana</span></td><td>180.0 ha</td><td>87</td><td><span class="badge b-verde">Activa</span></td></tr>
+            <tr><td><strong>San Isidro</strong></td><td>Arauca, Arauca</td><td><span class="badge b-oro">Grande</span></td><td>820.0 ha</td><td>340</td><td><span class="badge b-verde">Activa</span></td></tr>
+            <tr><td><strong>Bella Vista</strong></td><td>Acacías, Meta</td><td><span class="badge b-naranja">Pequeña</span></td><td>18.2 ha</td><td>6</td><td><span class="badge b-verde">Activa</span></td></tr>
+            <tr><td><strong>Los Ocobos</strong></td><td>Aguazul, Casanare</td><td><span class="badge b-azul">Mediana</span></td><td>210.0 ha</td><td>95</td><td><span class="badge b-naranja">Revisión</span></td></tr>
+            <tr><td><strong>Guatavita</strong></td><td>Tame, Arauca</td><td><span class="badge b-oro">Grande</span></td><td>1200.0 ha</td><td>510</td><td><span class="badge b-verde">Activa</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="paginacion">
+        <span>Mostrando 6 de 100 fincas</span>
+        <div class="pag-btns">
+          <button class="pag-btn activo">1</button>
+          <button class="pag-btn">2</button>
+          <button class="pag-btn">3</button>
+          <button class="pag-btn">›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avance + alertas -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="panel">
+        <div class="panel-head"><h3>Avance del sistema</h3></div>
+        <div class="panel-body">
+          <div class="prog-wrap"><div class="prog-top"><span>Login y autenticación</span><span>75%</span></div><div class="prog-bar"><div class="prog-fill" style="width:75%;background:var(--verde);"></div></div></div>
+          <div class="prog-wrap"><div class="prog-top"><span>Base de datos</span><span>60%</span></div><div class="prog-bar"><div class="prog-fill" style="width:60%;background:var(--verde);"></div></div></div>
+          <div class="prog-wrap"><div class="prog-top"><span>Fincas y ganado</span><span>45%</span></div><div class="prog-bar"><div class="prog-fill" style="width:45%;background:var(--naranja);"></div></div></div>
+          <div class="prog-wrap"><div class="prog-top"><span>Encriptación AES</span><span>50%</span></div><div class="prog-bar"><div class="prog-fill" style="width:50%;background:var(--naranja);"></div></div></div>
+          <div class="prog-wrap"><div class="prog-top"><span>Vacunación</span><span>20%</span></div><div class="prog-bar"><div class="prog-fill" style="width:20%;background:var(--rojo);"></div></div></div>
+          <div class="prog-wrap" style="margin-bottom:0"><div class="prog-top"><span>Reportes</span><span>0%</span></div><div class="prog-bar"><div class="prog-fill" style="width:2%;background:var(--rojo);"></div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Alertas sanitarias</h3></div>
+        <div class="panel-body">
+          <div class="alerta-item al-rojo"><span class="al-ico">⚠️</span><div class="al-txt"><strong>Fiebre Aftosa vencida</strong><span>14 animales sin revacunar — Finca Los Ocobos</span></div></div>
+          <div class="alerta-item al-naranja"><span class="al-ico">🔔</span><div class="al-txt"><strong>Próxima dosis</strong><span>Brucela — 23 animales en 15 días</span></div></div>
+          <div class="alerta-item al-verde"><span class="al-ico">✅</span><div class="al-txt"><strong>Carbón al día</strong><span>Finca San Isidro — 340 animales</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auditoria reciente -->
+  <div class="panel">
+    <div class="panel-head">
+      <h3>Actividad reciente del sistema</h3>
+      <span class="panel-tag">tabla: auditoria</span>
+    </div>
+    <div class="panel-body" style="padding:0;">
+      <table>
+        <thead><tr><th>Usuario</th><th>Rol</th><th>Acción</th><th>Módulo</th><th>IP</th><th>Fecha/hora</th></tr></thead>
+        <tbody>
+          <tr><td>wilmer.merchan</td><td><span class="badge b-rojo">Admin</span></td><td>Inicio de sesión</td><td>Auth</td><td>192.168.1.10</td><td>2025-05-14 09:12</td></tr>
+          <tr><td>juan.garcia</td><td><span class="badge b-verde">Vet.</span></td><td>Vacuna registrada — BOV-0023</td><td>Vacunación</td><td>192.168.1.15</td><td>2025-05-14 09:45</td></tr>
+          <tr><td>wilmer.merchan</td><td><span class="badge b-rojo">Admin</span></td><td>Usuario creado: emp2@asog...</td><td>Usuarios</td><td>192.168.1.10</td><td>2025-05-14 10:03</td></tr>
+          <tr><td>maria.lopez</td><td><span class="badge b-azul">Emp.</span></td><td>Consulta lista ganado</td><td>Ganado</td><td>192.168.1.22</td><td>2025-05-14 10:17</td></tr>
+          <tr><td>carlos.vega</td><td><span class="badge b-verde">Vet.</span></td><td>Estado salud: BOV-0045 → observación</td><td>Ganado</td><td>192.168.1.15</td><td>2025-05-14 10:52</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FINCAS
+══════════════════════════════════════════ -->
+<div id="pg-fincas" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Módulo de Fincas</h1>
+    <p class="page-sub">Gestión de predios registrados · tabla: fincas</p>
+  </div>
+
+  <div class="grid-3-1" style="margin-bottom:1.5rem;">
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Todas las fincas</h3>
+        <span class="panel-tag">100 registros</span>
+      </div>
+      <div class="panel-body" style="padding:.75rem 1.25rem;">
+        <div class="tipo-chips">
+          <button class="tipo-chip activo" onclick="filtrarFincas('todas',this)">Todas (100)</button>
+          <button class="tipo-chip" onclick="filtrarFincas('pequeña',this)">Pequeñas (68)</button>
+          <button class="tipo-chip" onclick="filtrarFincas('mediana',this)">Medianas (22)</button>
+          <button class="tipo-chip" onclick="filtrarFincas('grande',this)">Grandes (10)</button>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table id="tbl-fincas">
+          <thead><tr><th>#</th><th>Nombre finca</th><th>Municipio</th><th>Depto.</th><th>Tipo</th><th>Hectáreas</th><th>Ganado</th><th>Ganadero</th><th>Estado</th></tr></thead>
+          <tbody id="tbody-fincas"></tbody>
+        </table>
+      </div>
+      <div class="paginacion">
+        <span id="pag-info">Mostrando 1–10 de 100</span>
+        <div class="pag-btns" id="pag-btns"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="panel">
+        <div class="panel-head"><h3>Distribución</h3></div>
+        <div class="panel-body">
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:.4rem;"><span>🟠 Pequeñas</span><strong>68 (68%)</strong></div>
+            <div class="prog-bar" style="height:8px;"><div class="prog-fill" style="width:68%;background:var(--naranja);height:8px;border-radius:4px;"></div></div>
+          </div>
+          <div style="margin-bottom:1rem;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:.4rem;"><span>🔵 Medianas</span><strong>22 (22%)</strong></div>
+            <div class="prog-bar" style="height:8px;"><div class="prog-fill" style="width:22%;background:var(--azul);height:8px;border-radius:4px;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:.4rem;"><span>🟡 Grandes</span><strong>10 (10%)</strong></div>
+            <div class="prog-bar" style="height:8px;"><div class="prog-fill" style="width:10%;background:var(--oro);height:8px;border-radius:4px;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Registrar nueva finca</h3></div>
+        <div class="panel-body">
+          <div class="form-grid" style="gap:8px;">
+            <div class="f-grupo form-full"><label>Nombre de la finca</label><input type="text" placeholder="Ej: La Esperanza"></div>
+            <div class="f-grupo"><label>Municipio</label><input type="text" placeholder="Villavicencio"></div>
+            <div class="f-grupo"><label>Departamento</label>
+              <select><option>Meta</option><option>Casanare</option><option>Arauca</option><option>Vichada</option></select>
+            </div>
+            <div class="f-grupo"><label>Hectáreas</label><input type="number" placeholder="0.0"></div>
+            <div class="f-grupo"><label>Tipo de finca</label>
+              <select><option value="pequeña">Pequeña (&lt;50 ha)</option><option value="mediana">Mediana (50–300 ha)</option><option value="grande">Grande (&gt;300 ha)</option></select>
+            </div>
+            <div class="f-grupo"><label>Ganadero</label>
+              <select><option>Carlos Hernández</option><option>Luis Martínez</option><option>Jorge Rodríguez</option></select>
+            </div>
+          </div>
+          <div class="form-actions" style="margin-top:.75rem;padding-top:.75rem;">
+            <button class="btn-prim" onclick="alert('TODO PHP: INSERT INTO fincas')">Guardar finca</button>
+            <button class="btn-sec">Limpiar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     GANADO
+══════════════════════════════════════════ -->
+<div id="pg-ganado" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Registro de Ganado</h1>
+    <p class="page-sub">Inventario bovino · tabla: ganado · ~3.655 cabezas</p>
+  </div>
+  <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);">
+    <div class="stat-card s-verde"><p class="stat-lbl">Total</p><p class="stat-val">3.655</p><p class="stat-sub">Cabezas registradas</p></div>
+    <div class="stat-card s-naranja"><p class="stat-lbl">Sanos</p><p class="stat-val">3.216</p><p class="stat-sub">88% del inventario</p></div>
+    <div class="stat-card s-oro"><p class="stat-lbl">Observación</p><p class="stat-val">293</p><p class="stat-sub">8% en seguimiento</p></div>
+    <div class="stat-card s-rojo"><p class="stat-lbl">Tratamiento</p><p class="stat-val">146</p><p class="stat-sub">4% con tratamiento</p></div>
+    <div class="stat-card s-azul"><p class="stat-lbl">Razas</p><p class="stat-val">10</p><p class="stat-sub">Brahman · Cebú · más</p></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head">
+      <h3>Inventario bovino</h3>
+      <span class="panel-tag">tabla: ganado</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Código</th><th>Raza</th><th>Sexo</th><th>Edad</th><th>Peso</th><th>Propósito</th><th>Estado salud</th><th>Finca</th></tr></thead>
+        <tbody>
+          <tr><td><code>BOV-0001</code></td><td>Brahman</td><td>Hembra</td><td>36 m</td><td>420 kg</td><td><span class="badge b-naranja">Carne</span></td><td><span class="badge b-verde">Sano</span></td><td>El Paraíso</td></tr>
+          <tr><td><code>BOV-0002</code></td><td>Cebú</td><td>Macho</td><td>48 m</td><td>510 kg</td><td><span class="badge b-azul">Doble prop.</span></td><td><span class="badge b-verde">Sano</span></td><td>La Esperanza</td></tr>
+          <tr><td><code>BOV-0003</code></td><td>Nelore</td><td>Hembra</td><td>24 m</td><td>385 kg</td><td><span class="badge b-verde">Leche</span></td><td><span class="badge b-oro">Observación</span></td><td>San Isidro</td></tr>
+          <tr><td><code>BOV-0004</code></td><td>Normando</td><td>Hembra</td><td>60 m</td><td>490 kg</td><td><span class="badge b-verde">Leche</span></td><td><span class="badge b-verde">Sano</span></td><td>Bella Vista</td></tr>
+          <tr><td><code>BOV-0005</code></td><td>Angus</td><td>Macho</td><td>18 m</td><td>360 kg</td><td><span class="badge b-naranja">Carne</span></td><td><span class="badge b-rojo">Tratamiento</span></td><td>Los Ocobos</td></tr>
+          <tr><td><code>BOV-0006</code></td><td>Gyr</td><td>Hembra</td><td>30 m</td><td>400 kg</td><td><span class="badge b-naranja">Carne</span></td><td><span class="badge b-verde">Sano</span></td><td>Guatavita</td></tr>
+          <tr><td><code>BOV-0007</code></td><td>Brahman</td><td>Hembra</td><td>42 m</td><td>455 kg</td><td><span class="badge b-azul">Doble prop.</span></td><td><span class="badge b-verde">Sano</span></td><td>El Paraíso</td></tr>
+          <tr><td><code>BOV-0008</code></td><td>Simmental</td><td>Macho</td><td>56 m</td><td>580 kg</td><td><span class="badge b-naranja">Carne</span></td><td><span class="badge b-verde">Sano</span></td><td>San Isidro</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="paginacion"><span>Mostrando 8 de 3.655 cabezas</span><div class="pag-btns"><button class="pag-btn activo">1</button><button class="pag-btn">2</button><button class="pag-btn">···</button><button class="pag-btn">456</button></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     VACUNACIÓN
+══════════════════════════════════════════ -->
+<div id="pg-vacunacion" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Vacunación y Sanidad</h1>
+    <p class="page-sub">Control sanitario · tablas: vacunacion · 574 registros</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card s-verde"><p class="stat-lbl">Vacunas aplicadas</p><p class="stat-val">574</p><p class="stat-sub">Total histórico</p></div>
+    <div class="stat-card s-rojo"><p class="stat-lbl">Vencidas</p><p class="stat-val">47</p><p class="stat-sub">Requieren atención urgente</p></div>
+    <div class="stat-card s-naranja"><p class="stat-lbl">Próximos 30 días</p><p class="stat-val">83</p><p class="stat-sub">Pendientes de aplicar</p></div>
+    <div class="stat-card s-azul"><p class="stat-lbl">Al día</p><p class="stat-val">444</p><p class="stat-sub">77% del inventario</p></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Historial de vacunación</h3><span class="panel-tag">tabla: vacunacion</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Animal</th><th>Vacuna</th><th>Fecha aplicada</th><th>Próxima dosis</th><th>Veterinario</th><th>Lote</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td><code>BOV-0001</code></td><td>Fiebre Aftosa</td><td>2024-03-15</td><td>2024-09-15</td><td>Juan García</td><td>LOT-4521</td><td><span class="badge b-rojo">Vencida</span></td></tr>
+          <tr><td><code>BOV-0002</code></td><td>Brucela</td><td>2024-06-20</td><td>2025-06-20</td><td>Carlos Vega</td><td>LOT-3301</td><td><span class="badge b-verde">Al día</span></td></tr>
+          <tr><td><code>BOV-0003</code></td><td>Carbón</td><td>2024-04-10</td><td>2025-04-10</td><td>Juan García</td><td>LOT-2287</td><td><span class="badge b-verde">Al día</span></td></tr>
+          <tr><td><code>BOV-0004</code></td><td>Rabia</td><td>2024-08-05</td><td>2025-08-05</td><td>Carlos Vega</td><td>LOT-5512</td><td><span class="badge b-naranja">Próxima</span></td></tr>
+          <tr><td><code>BOV-0005</code></td><td>Clostridiosis</td><td>2024-01-18</td><td>2024-07-18</td><td>Juan García</td><td>LOT-1108</td><td><span class="badge b-rojo">Vencida</span></td></tr>
+          <tr><td><code>BOV-0006</code></td><td>IBR/DVB</td><td>2024-11-02</td><td>2025-11-02</td><td>Carlos Vega</td><td>LOT-6634</td><td><span class="badge b-verde">Al día</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PRODUCCIÓN
+══════════════════════════════════════════ -->
+<div id="pg-produccion" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Producción Ganadera</h1>
+    <p class="page-sub">Registro de ventas y producción · tabla: produccion · año 2024</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card s-verde"><p class="stat-lbl">Ingresos 2024</p><p class="stat-val">$847M</p><p class="stat-sub">Pesos colombianos</p></div>
+    <div class="stat-card s-naranja"><p class="stat-lbl">Litros de leche</p><p class="stat-val">284K</p><p class="stat-sub">50 fincas · 12 meses</p></div>
+    <div class="stat-card s-azul"><p class="stat-lbl">Kg de carne</p><p class="stat-val">127K</p><p class="stat-sub">Ventas anuales</p></div>
+    <div class="stat-card s-rojo"><p class="stat-lbl">Cabezas vendidas</p><p class="stat-val">1.240</p><p class="stat-sub">Promedio 103/mes</p></div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Producción mensual 2024</h3><span class="panel-tag">tabla: produccion</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Mes</th><th>Fincas</th><th>Litros leche</th><th>Kg carne</th><th>Cab. vendidas</th><th>Ingresos COP</th></tr></thead>
+        <tbody>
+          <tr><td>Enero 2024</td><td>50</td><td>24.180</td><td>10.420</td><td>98</td><td>$68.4M</td></tr>
+          <tr><td>Febrero 2024</td><td>50</td><td>22.940</td><td>9.870</td><td>88</td><td>$62.1M</td></tr>
+          <tr><td>Marzo 2024</td><td>50</td><td>25.600</td><td>11.200</td><td>110</td><td>$73.8M</td></tr>
+          <tr><td>Abril 2024</td><td>50</td><td>23.110</td><td>10.050</td><td>95</td><td>$65.9M</td></tr>
+          <tr><td>Mayo 2024</td><td>50</td><td>26.800</td><td>12.100</td><td>118</td><td>$79.2M</td></tr>
+          <tr><td>Junio 2024</td><td>50</td><td>21.500</td><td>9.200</td><td>85</td><td>$59.7M</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ATENCIONES
+══════════════════════════════════════════ -->
+<div id="pg-atenciones" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Atenciones a Ganaderos</h1>
+    <p class="page-sub">Gestión de solicitudes · tabla: atenciones</p>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Solicitudes registradas</h3><span class="panel-tag">tabla: atenciones</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Ganadero</th><th>Asunto</th><th>Empleado</th><th>Estado</th><th>Fecha</th></tr></thead>
+        <tbody>
+          <tr><td>001</td><td>Carlos Hernández</td><td>Consulta sobre vacunación</td><td>María López</td><td><span class="badge b-verde">Respondido</span></td><td>2025-04-12</td></tr>
+          <tr><td>002</td><td>Luis Martínez</td><td>Reporte de animal enfermo</td><td>Luisa Mora</td><td><span class="badge b-naranja">Pendiente</span></td><td>2025-04-15</td></tr>
+          <tr><td>003</td><td>Jorge Rodríguez</td><td>Solicitud visita veterinaria</td><td>María López</td><td><span class="badge b-azul">Cerrado</span></td><td>2025-04-18</td></tr>
+          <tr><td>004</td><td>Andrés García</td><td>Actualización datos finca</td><td>Luisa Mora</td><td><span class="badge b-verde">Respondido</span></td><td>2025-04-20</td></tr>
+          <tr><td>005</td><td>Pedro López</td><td>Certificado sanitario</td><td>María López</td><td><span class="badge b-naranja">Pendiente</span></td><td>2025-05-02</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     AUDITORÍA
+══════════════════════════════════════════ -->
+<div id="pg-auditoria" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Registro de Auditoría</h1>
+    <p class="page-sub">Trazabilidad completa del sistema · tabla: auditoria</p>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Log completo de actividades</h3><span class="panel-tag">tabla: auditoria</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Usuario</th><th>Rol</th><th>Acción</th><th>Módulo</th><th>IP</th><th>Fecha/hora</th></tr></thead>
+        <tbody>
+          <tr><td>001</td><td>wilmer.merchan</td><td><span class="badge b-rojo">Admin</span></td><td>Inicio de sesión</td><td>Auth</td><td>192.168.1.10</td><td>2025-05-14 09:12:34</td></tr>
+          <tr><td>002</td><td>juan.garcia</td><td><span class="badge b-verde">Vet.</span></td><td>Vacuna registrada — BOV-0023</td><td>Vacunación</td><td>192.168.1.15</td><td>2025-05-14 09:45:01</td></tr>
+          <tr><td>003</td><td>wilmer.merchan</td><td><span class="badge b-rojo">Admin</span></td><td>Usuario creado: emp2</td><td>Usuarios</td><td>192.168.1.10</td><td>2025-05-14 10:03:22</td></tr>
+          <tr><td>004</td><td>maria.lopez</td><td><span class="badge b-azul">Emp.</span></td><td>Consulta lista ganado</td><td>Ganado</td><td>192.168.1.22</td><td>2025-05-14 10:17:45</td></tr>
+          <tr><td>005</td><td>carlos.vega</td><td><span class="badge b-verde">Vet.</span></td><td>BOV-0045 → observación</td><td>Ganado</td><td>192.168.1.15</td><td>2025-05-14 10:52:10</td></tr>
+          <tr><td>006</td><td>wilmer.merchan</td><td><span class="badge b-rojo">Admin</span></td><td>Reporte producción generado</td><td>Reportes</td><td>192.168.1.10</td><td>2025-05-14 11:04:58</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     USUARIOS
+══════════════════════════════════════════ -->
+<div id="pg-usuarios" class="page">
+  <div class="page-header">
+    <h1 class="page-titulo">Gestión de Usuarios</h1>
+    <p class="page-sub">Solo administradores · tabla: usuarios</p>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Usuarios del sistema</h3><span class="panel-tag">tabla: usuarios</span></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>Correo</th><th>Rol</th><th>Activo</th><th>Creado</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Wilmer Merchan</td><td>wilmer.merchan@asoganaderos.com</td><td><span class="badge b-rojo">Admin</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-01-01</td></tr>
+          <tr><td>2</td><td>Admin Sistema</td><td>admin.sistema@asoganaderos.com</td><td><span class="badge b-rojo">Admin</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-01-01</td></tr>
+          <tr><td>3</td><td>Juan García</td><td>juan.garcia@asoganaderos.com</td><td><span class="badge b-verde">Veterinario</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-02-15</td></tr>
+          <tr><td>4</td><td>Carlos Vega</td><td>carlos.vega@asoganaderos.com</td><td><span class="badge b-verde">Veterinario</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-02-15</td></tr>
+          <tr><td>5</td><td>María López</td><td>maria.lopez@asoganaderos.com</td><td><span class="badge b-azul">Empleado</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-03-01</td></tr>
+          <tr><td>6</td><td>Luisa Mora</td><td>luisa.mora@asoganaderos.com</td><td><span class="badge b-azul">Empleado</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-03-01</td></tr>
+          <tr><td>7</td><td>Carlos Hernández</td><td>carlos.hernandez@gmail.com</td><td><span class="badge b-naranja">Ganadero</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-04-10</td></tr>
+          <tr><td>8</td><td>Luis Martínez</td><td>luis.martinez@gmail.com</td><td><span class="badge b-naranja">Ganadero</span></td><td><span class="badge b-verde">Sí</span></td><td>2024-04-12</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── Datos de fincas para la tabla interactiva ──
+const FINCAS = [
+  {n:"El Paraíso",mun:"Villavicencio",dep:"Meta",tipo:"pequeña",ha:32.5,cab:12,gan:"Carlos Hernández"},
+  {n:"Brisas del Valle",mun:"Yopal",dep:"Casanare",tipo:"pequeña",ha:28.0,cab:8,gan:"Luis Martínez"},
+  {n:"El Mirador",mun:"Arauca",dep:"Arauca",tipo:"pequeña",ha:45.0,cab:18,gan:"Jorge Rodríguez"},
+  {n:"La Escondida",mun:"Acacías",dep:"Meta",tipo:"pequeña",ha:15.5,cab:5,gan:"Andrés García"},
+  {n:"Los Ocobos",mun:"Aguazul",dep:"Casanare",tipo:"mediana",ha:210.0,cab:95,gan:"Pedro López"},
+  {n:"Bella Vista",mun:"San Martín",dep:"Meta",tipo:"pequeña",ha:18.2,cab:6,gan:"Miguel Sánchez"},
+  {n:"La Primavera",mun:"Tauramena",dep:"Casanare",tipo:"mediana",ha:185.0,cab:80,gan:"Fabio Torres"},
+  {n:"El Encanto",mun:"Cumaral",dep:"Meta",tipo:"pequeña",ha:40.0,cab:14,gan:"Hernán Vargas"},
+  {n:"Los Guaduales",mun:"Granada",dep:"Meta",tipo:"pequeña",ha:22.0,cab:7,gan:"Raúl Moreno"},
+  {n:"Rincón Verde",mun:"Puerto López",dep:"Meta",tipo:"pequeña",ha:35.0,cab:13,gan:"Jairo Jiménez"},
+  {n:"La Casona",mun:"Villavicencio",dep:"Meta",tipo:"grande",ha:750.0,cab:310,gan:"Edilberto Castro"},
+  {n:"El Descanso",mun:"Yopal",dep:"Casanare",tipo:"mediana",ha:160.0,cab:72,gan:"Néstor Ruiz"},
+  {n:"La Victoria",mun:"Tame",dep:"Arauca",tipo:"grande",ha:980.0,cab:420,gan:"Álvaro Díaz"},
+  {n:"San José",mun:"Arauca",dep:"Arauca",tipo:"mediana",ha:230.0,cab:105,gan:"Rodrigo Peña"},
+  {n:"El Retiro",mun:"Acacías",dep:"Meta",tipo:"pequeña",ha:42.0,cab:16,gan:"Gustavo Reyes"},
+  {n:"La Esperanza",mun:"Yopal",dep:"Casanare",tipo:"mediana",ha:180.0,cab:87,gan:"María Gómez"},
+  {n:"Mi Ranchito",mun:"San Martín",dep:"Meta",tipo:"pequeña",ha:12.0,cab:4,gan:"Rosa Ramírez"},
+  {n:"La Floresta",mun:"Aguazul",dep:"Casanare",tipo:"pequeña",ha:38.0,cab:12,gan:"Carmen Herrera"},
+  {n:"La Providencia",mun:"Granada",dep:"Meta",tipo:"mediana",ha:195.0,cab:90,gan:"Luz Medina"},
+  {n:"El Recuerdo",mun:"Puerto López",dep:"Meta",tipo:"pequeña",ha:25.0,cab:9,gan:"Gloria Ríos"},
+  {n:"Villa María",mun:"Cumaral",dep:"Meta",tipo:"pequeña",ha:48.0,cab:19,gan:"Ana Mora"},
+  {n:"San Isidro",mun:"Arauca",dep:"Arauca",tipo:"grande",ha:820.0,cab:340,gan:"Patricia Suárez"},
+  {n:"La Roma",mun:"Tauramena",dep:"Casanare",tipo:"mediana",ha:270.0,cab:120,gan:"Sandra Parra"},
+  {n:"Buena Vista",mun:"Villavicencio",dep:"Meta",tipo:"pequeña",ha:30.0,cab:10,gan:"Claudia Rojas"},
+  {n:"El Jazmín",mun:"Yopal",dep:"Casanare",tipo:"pequeña",ha:20.0,cab:6,gan:"Beatriz Salcedo"},
+  {n:"San Antonio",mun:"Tame",dep:"Arauca",tipo:"mediana",ha:200.0,cab:92,gan:"Olga Cárdenas"},
+  {n:"El Diamante",mun:"Acacías",dep:"Meta",tipo:"grande",ha:1100.0,cab:480,gan:"Ángela Montoya"},
+  {n:"La Cristalina",mun:"Arauca",dep:"Arauca",tipo:"pequeña",ha:33.0,cab:11,gan:"Amparo Ospina"},
+  {n:"El Recreo",mun:"Aguazul",dep:"Casanare",tipo:"mediana",ha:150.0,cab:68,gan:"Esperanza Quintero"},
+  {n:"Santa Helena",mun:"San Martín",dep:"Meta",tipo:"pequeña",ha:44.0,cab:17,gan:"Cecilia Agudelo"},
+];
+
+// Rellenar hasta 100 con variaciones
+while(FINCAS.length < 100){
+  const base = FINCAS[FINCAS.length % 30];
+  FINCAS.push({...base, n: base.n + " " + (FINCAS.length+1), ha: +(base.ha*0.9+Math.random()*20).toFixed(1), cab: Math.max(2,Math.floor(base.cab*0.8+Math.random()*10))});
+}
+
+let paginaActual = 1;
+const POR_PAGINA = 10;
+let filtroTipo = 'todas';
+
+function renderFincas(){
+  const filtradas = filtroTipo === 'todas' ? FINCAS : FINCAS.filter(f => f.tipo === filtroTipo);
+  const total = filtradas.length;
+  const totalPags = Math.ceil(total / POR_PAGINA);
+  const inicio = (paginaActual-1)*POR_PAGINA;
+  const fin = Math.min(inicio+POR_PAGINA, total);
+  const slice = filtradas.slice(inicio, fin);
+
+  const TIPO_BADGE = {pequeña:'b-naranja',mediana:'b-azul',grande:'b-oro'};
+  const tbody = document.getElementById('tbody-fincas');
+  tbody.innerHTML = slice.map((f,i) => `
+    <tr>
+      <td>${inicio+i+1}</td>
+      <td><strong>${f.n}</strong></td>
+      <td>${f.mun}</td>
+      <td>${f.dep}</td>
+      <td><span class="badge ${TIPO_BADGE[f.tipo]}">${f.tipo.charAt(0).toUpperCase()+f.tipo.slice(1)}</span></td>
+      <td>${f.ha} ha</td>
+      <td>${f.cab}</td>
+      <td>${f.gan}</td>
+      <td><span class="badge b-verde">Activa</span></td>
+    </tr>`).join('');
+
+  document.getElementById('pag-info').textContent = `Mostrando ${inicio+1}–${fin} de ${total} fincas`;
+
+  const btnWrap = document.getElementById('pag-btns');
+  btnWrap.innerHTML = '';
+  for(let p=1;p<=Math.min(totalPags,5);p++){
+    const b = document.createElement('button');
+    b.className = 'pag-btn' + (p===paginaActual?' activo':'');
+    b.textContent = p;
+    b.onclick = ()=>{ paginaActual=p; renderFincas(); };
+    btnWrap.appendChild(b);
+  }
+}
+
+function filtrarFincas(tipo, btn){
+  filtroTipo = tipo;
+  paginaActual = 1;
+  document.querySelectorAll('.tipo-chip').forEach(c=>c.classList.remove('activo'));
+  btn.classList.add('activo');
+  renderFincas();
+}
+
+// ── Navegación ──
+function irA(pagId, link){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('activo'));
+  document.querySelectorAll('.side-link').forEach(l=>l.classList.remove('activo'));
+  document.getElementById('pg-'+pagId).classList.add('activo');
+  if(link) link.classList.add('activo');
+  if(pagId==='fincas') renderFincas();
+  window.scrollTo(0,0);
+}
+
+// Init
+renderFincas();
+</script>
+</body>
+</html>
